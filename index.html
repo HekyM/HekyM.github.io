@@ -1462,6 +1462,10 @@
         let showRow = true;
         let hideRow = false;
 
+        if (!filter) {
+            return showRow;
+        }
+
         if (filter['faction'] !== 'undefined' && row['faction'] !== filter['faction']) {
             return hideRow;
         }
