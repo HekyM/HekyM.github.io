@@ -1120,25 +1120,40 @@ def generate():
                 row['faction'] = faction
         return [row]
 
+    fusion_heroes_filename = 'data/fusion_heroes.v1.json'
+    shelter_heroes_filename = 'data/shelter_heroes.v1.json'
+    lvl_filename = 'data/lvl.v1.json'
+
     fusion_heroes = []
     for faction in heroes.keys():
         fusion_heroes.extend(generate_fusion_heroes(faction))
 
-    with open('data/fusion_heroes.json', 'w') as outfile:
+    with open(fusion_heroes_filename, 'w') as outfile:
         json.dump(fusion_heroes, outfile)
 
     shelter_heroes = []
     for faction in ['Shadow', 'Fortress', 'Abyss', 'Forest']:
         shelter_heroes.extend(generate_shelter_heroes(faction))
 
-    with open('data/shelter_heroes.json', 'w') as outfile:
+    with open(shelter_heroes_filename, 'w') as outfile:
         json.dump(shelter_heroes, outfile)
 
-    with open('data/lvl.json', 'w') as outfile:
+    with open(lvl_filename, 'w') as outfile:
         json.dump(generate_leveling(), outfile)
 
     # with open('data/lvl-total.json', 'w') as outfile:
     #     json.dump(generate_total_leveling(), outfile)
+
+    import re
+    with open ('index.html', 'r' ) as f:
+        content = f.read()
+
+    content = re.sub('data\/fusion_heroes\.v[0-9]+\.json', fusion_heroes_filename, content, flags = re.M)
+    content = re.sub('data\/shelter_heroes\.v[0-9]+\.json', shelter_heroes_filename, content, flags = re.M)
+    content = re.sub('data\/lvl\.v[0-9]+\.json', lvl_filename, content, flags = re.M)
+
+    with open ('index.html', 'w' ) as f:
+        f.write(content)
 
     return
 
