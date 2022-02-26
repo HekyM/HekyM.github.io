@@ -2029,7 +2029,7 @@
     }
 
     function lvlFormatter(value, row, index, field) {
-        if (isNaN(value)) {
+        if (isNaN(value) || value.startsWith('+')) {
             return value
         } else {
             return value + '&#9733;'
