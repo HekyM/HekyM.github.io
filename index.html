@@ -1,0 +1,2176 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IH Helper</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+
+        <link href="https://db.onlinewebfonts.com/c/e7f249e71a563eed9c495835657eb9c2?family=Poetsen+One" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+        <link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
+        <link href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/sticky-header/bootstrap-table-sticky-header.css" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+
+        <script type="module" src="https://vincitego.github.io/imp/impSim.js"></script>
+
+        <style>
+            @import url(https://db.onlinewebfonts.com/c/e7f249e71a563eed9c495835657eb9c2?family=Poetsen+One);
+            @font-face {font-family: "Poetsen One"; src: url("//db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.eot");  }
+            html, .modal {
+                overflow-y: scroll;
+            }
+            
+            body {
+                font-family: "Poetsen One";
+                background-color: #b8ae93;
+                padding: 2em;
+            }
+
+            .container-col {
+                padding: 0;
+            }
+
+            #nav-tab {
+                background-color: #fdf6ce;
+                border: 1px solid #bd916e;
+                border-radius: 20px;
+            }
+            .nav-link {
+                padding: .5rem;
+            }
+            .nav-pills .nav-link.top, .nav-pills .nav-link.bottom {
+                border-radius: 20px;
+            }
+            .nav-pills .nav-link:hover span {
+                text-decoration: underline;
+            }
+            .nav-link img {
+                float: left;
+            }
+            .nav-link span {
+                float: left;
+                margin-left: 0.5em;
+                font-size: larger;
+            }
+
+            #cookiePanel {
+                padding: 1em;
+                font-size: x-small;
+                background-color: grey;
+            }
+            #cookiePanel button {
+                width: 100%;
+                margin-top: 0.5em;
+            }
+
+            .ih-container {
+                background-color: #e1caaa;
+                border-radius: 20px;
+                border: 1px solid #bd916e;
+                padding: 20px;
+                width: 740px;
+                min-height: 50vh;
+            }
+
+            .table td, .table th {
+                padding: 5px !important;
+            }
+            .table .th-inner {
+                padding: 0px !important;
+            }
+            table { 
+                border-collapse: separate; 
+                border-spacing: 0 5px; 
+                background-color: #e1caaa;
+                border-radius: 20px;
+                padding: 10px;
+            }
+            .table-bordered {
+                border: 1px solid #bd916e;
+            }
+            th:last-child {
+                padding-right: 10px !important;
+            }
+            .sticky-header th {
+                border: 0;
+                background-color: #e1caaa;
+            }
+            td {
+                border: solid 0px #000;
+                border-style: solid none;
+                background-color: #bd916e;
+            }
+            td:first-child {
+                border-left-style: solid;
+                border-top-left-radius: 10px; 
+                border-bottom-left-radius: 10px;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+            td:last-child {
+                border-right-style: solid;
+                border-bottom-right-radius: 10px; 
+                border-top-right-radius: 10px;
+                padding-right: 10px !important;
+            }
+            
+            img{display: block; margin-left: auto; margin-right: auto;}
+            img.hero {width: 45px; height: 45px;}
+            img.layout {width: 30px; height: 30px;}
+            img.stars {height: 15px;}
+            td img.stars {height: 25px;}
+
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+
+            #search-fusion-heroes-hero {
+                font-size: 1.3rem;
+            }
+
+            .shelter-faction-toggle.ready {
+                /*border-radius: 15px;*/
+                /*border: 3px solid #6cc901;*/
+            }
+
+            #shelter_heroes.table { 
+                border-spacing: 2px 5px; 
+            }
+            #shelter_heroes.table th {
+                padding: 0px !important;
+                border: 5px solid #e1caaa;
+            }
+            #shelter_heroes.table td {
+                padding: 0px !important;
+                border: 5px solid #bd916e;
+            }
+            #shelter_heroes th img.stars {height: 30px;}
+            #shelter_heroes td {
+                border-radius: 10px; 
+            }
+            #shelter_heroes td.active-shelter {
+                border: 5px solid #f7ab21;
+                background-color: #d68f0c;
+            }
+            #shelter_heroes td.active-shelter.ready {
+                border: 5px solid #6cc901;
+                background-color: #307738ad;
+            }
+
+            .images img {float:left; margin: 1px;}
+            .images {display: table; margin-right: auto; margin-left: auto;}
+            .shelter-facion-left-header {display: table; margin-right: auto; margin-left: auto;}
+            .shelter-facion-left-header img, .shelter-facion-left-header div {float:left; margin: 1px;}
+
+            .imp-container {
+                background-color: #e1caaa;
+                border-radius: 20px;
+                border: 1px solid #bd916e;
+                padding: 20px;
+                width: 740px;
+            }
+            .relative-container {
+                position:relative;
+            }
+            #imp-map {
+                margin: 0;
+                margin-bottom: 20px;
+            }
+            .floating-overlay {
+                float: left;
+                position: absolute;
+            }
+            .imp-circle {
+                border-radius: 30px;
+                border: 3px solid #734633;
+            }
+            #mushroom1, #mushroom2, #mushroom3 {
+                text-align: center;
+            }
+            .imp-plus-minus {
+                width: 29px; 
+                padding: 1px
+            }
+            .imp-plus-minus:hover {
+                padding: 0;
+            }
+            
+            #imp-chart {
+                width: 700px;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                background-color: #fdf6ce;
+                border-radius: 20px;
+            }
+
+            #imp-chart .bar {
+                display: inline-block;
+                text-align: right;
+                width: 1%;
+                background-color: #66ccff;
+                border-radius: 5px;
+                font-family: 'Fira Mono';
+                font-weight: bold;
+                font-size: x-large;
+            }
+            #imp-chart .bar-value {
+                font-family: 'Fira Mono';
+                font-weight: bold;
+                font-size: x-large;
+                margin-left: 2px;
+            }
+            #imp-chart .col1 {
+                display: none;
+                float: left;
+                width: 5%;
+                padding: 1px;
+                text-align: right;
+            }
+            #imp-chart .col-star {
+                float: left;
+                width: 6%;
+                padding: 1px;
+            }
+            #imp-chart .col-star img {
+                width: 35px;
+            }
+            #imp-chart .col-revard {
+                float: left;
+                width: 6%;
+                padding: 1px;
+            }
+            #imp-chart .col-revard img {
+                width: 49px;
+                margin: -6px -10px -10px 0px;
+            }
+            #imp-chart .col-chance {
+                float: left;
+                width: 20%;
+                padding: 1px;
+                text-align: right;
+                font-family: 'Fira Mono';
+                font-weight: bold;
+                font-size: x-large;
+            }
+            #imp-chart .col2 {
+                float: right;
+                width: 66%;
+                padding: 1px;
+                margin: 0;
+                white-space: nowrap;
+            }
+            #imp-chart .footer {
+                margin-left: 4em;
+            }
+            #imp-chart .row {
+                margin-left: 15px;
+                margin-right: 15px;
+                border-bottom: 1px solid #f3d8c4;
+            }
+            #imp-chart .row:hover {
+                background-color: #f3d8c4;
+                border-radius: 5px;
+            }
+            .imp-input {
+                border-radius: 5px;
+                border: 3px solid white;
+                color: white;
+                background-color: #007bff;
+                text-align: right;
+            }
+            .imp-input::-moz-selection { /* Code for Firefox */
+                color: #007bff;
+                background: white;
+            }
+            .imp-input::selection {
+                color: #007bff;
+                background: white;
+            }
+            .imp-radio input[type="radio"] { 
+                display: none;
+            }
+            .imp-radio label, .plus-minus { 
+                margin: 0;
+                padding: 0px 7px;
+                font-size: small;
+            }
+            .plus-minus {
+                border: 3px solid white;
+            }
+            .imp-radio input[type="radio"]:checked+label {
+                color: white;
+                background-color: #007bff;
+            }
+            .imp-select {
+                width: 1.8em;
+                text-align: left;
+                color: white;
+                background-color: #007bff;
+                border-radius: 5px;
+                border: 3px solid white;
+            }
+            .select-right {
+                text-align:right;  
+                direction: rtl;
+            }
+
+            .select-noarrow {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-overflow: '';
+            }
+
+            .icon-dropdown.dropdown, .icon-dropdown.dropup {
+                width: 45px;
+            }
+
+            .icon-dropdown-menu.dropdown-menu {
+                min-width: 1rem;
+                padding: 2px;
+                margin: 1px;
+                
+                background-color: #e1caaa;
+                border: 2px solid #47270c;
+            }
+            .icon-dropdown-menu.dropdown-menu.vertical {
+                margin-left: -4px;
+            }
+            .icon-dropdown-menu.dropdown-menu.horizontal {
+                margin-top: -2px;
+            }
+            .icon-dropdown-menu.dropdown-menu img {
+                padding: 1px;
+                border-radius: 5px;
+            }
+            .horizontal.icon-dropdown-menu.dropdown-menu img, .horizontal.icon-dropdown-menu.dropdown-menu img {
+                float: left;
+            }
+            .icon-dropdown-menu.dropdown-menu img:hover {
+                background-color: #bd916e;
+            }
+            img.preview {
+                margin: 0px;
+                padding: 2px;
+                width: 33.3%;
+                height: auto;
+            }
+            img.preview:hover {
+                cursor: zoom-in;
+            }
+            img.preview.big-preview {
+                width: 100%;
+                height: auto;
+            }
+
+            #select-activeTarot {
+                height: 32px; 
+                width: 62px; 
+                padding: 1px;
+                background-color: #007bff;
+                border-radius: 5px;
+                border: 3px solid white;
+            }
+
+            .dropdown-menu.imp-dropdown-menu {
+                background-color: #e1caaa;
+                border: 2px solid #47270c;
+                border-radius: 20px;
+                margin-left: -12em;
+                padding: 0;
+            }
+            .hover-rows tr td {
+                color: white;
+                text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+            }.hover-rows tr:hover td {
+                background-color: #6cc901;
+            }
+            .imp-dropdown-menu img{
+                height: 2em; 
+                width: auto; 
+                padding: 1px;
+            }
+
+            #diceCalculatorModal .modal-content, #starsSelectModal .modal-content{
+                background-color: #e1caaa;
+                border: 2px solid #47270c;
+                border-radius: 20px;
+            }
+
+            #diceCalculatorModal table {
+                width: 100%;
+            }
+
+            #diceCalculatorModal table tr {
+                height: 60px;
+            }
+            #diceCalculatorModal table td {
+                padding-left: .5em;
+                padding-right: .5em;
+            }
+
+            img.layout.circle.checkable.checked {
+                border-radius: 15px;
+                border: 3px solid #007bff;
+            }
+            img.hero.circle.checkable.checked {
+                border-radius: 30px;
+                border: 3px solid #007bff;
+            }
+            .hero-checkbox {
+                width: 25px;
+                height: 25px;
+                margin: 9px;
+            }
+
+            /*Void Ark*/
+
+            #leveling td {
+                text-align: right;
+                white-space: nowrap;
+                /*padding-left: 1px !important;*/
+            }
+            #leveling td:first-child {
+                text-align: left;
+            }
+
+            .lvl-active {
+                border-radius: 10px;
+                border: 3px solid #6cc901;
+            }
+            #lvlToggle.lvl-active {
+                border-radius: 25px;
+            }
+            .hero.lvl:hover, #lvlToggle:hover {
+                cursor: pointer;
+            }
+            .resource-img{
+                width: 1.5em;
+                height: 1.5em;
+            }
+            .lvl-shards {
+                width: 45px; 
+                height: 45px;
+                background-color: #785b4d;
+                color: white;
+                border-radius: 10px;
+            }
+            .lvl-shards.lvl-shards-self {
+                background-color: #edbd456e;
+            }
+            .lvl-shards img, .lvl-shards span{
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .lvl-shards span {
+                text-align: center;
+                padding-top: .5em;
+                display: block;
+            }
+            .resource-text {text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;}
+            .resource-text.big-numner {
+                min-width: 3.1em;
+                display: block;
+            }
+            .resource-stone { color: #ded3e2; }
+            .resource-spirit { color: #cedfd1; }
+            .resource-gold { color: #d4cebe; }
+            .resource-stellar { color: #e1e2f5; }
+
+            .clickable:hover {
+                cursor: pointer;
+            }
+
+            .row.spacer {
+                height: 2em;
+            }
+
+            img.transcendence {
+                width: 80%;
+                height: auto;
+            }
+            .cores-container input {
+                width: 100%;
+                text-align: right;
+            }
+
+            .cores-container .label {
+                font-size: large;
+                margin: .4em 0;
+            }
+            .transcendenceValue {
+                text-align: center;
+                font-size: xx-large;
+                display: block;
+                width: 100%;
+            }
+
+            .settings-container .row {
+                margin-left: .5em;
+                margin-right: .5em;
+                padding-top: .5em;
+                padding-bottom: .5em;
+                border-top: 1px solid #bd916e;
+            }
+            .settings-container .col-sm button {
+                float: right;
+                width: 10em;
+            }
+            #disableCookies {
+                border-top: 0;
+            }
+            .events {
+                display: none;
+            }
+        </style>
+    </head>
+    <body onload="init();">
+        <div class="container">
+        <div class="row">
+            <div class="col-3 container-col">
+              <div class="nav flex-column nav-pills" id="nav-tab" role="tablist">
+                <a class="nav-link top active" id="tab00-tab" data-toggle="pill" href="#tab00" role="tab"><img class="layout" src="img/layout/i.png"><span>Home</span></a>
+                <a class="nav-link" id="tab01-tab" data-toggle="pill" href="#tab01" role="tab"><img class="layout" src="img/heroes/eloise-10.png"><span>Heroes</span></a>
+                <a class="nav-link" id="tab02-tab" data-toggle="pill" href="#tab02" role="tab"><img class="layout" src="img/resources/stone.png"><span>Leveling</span></a>
+                <a class="nav-link" id="tab03-tab" data-toggle="pill" href="#tab03" role="tab"><img class="layout" src="img/heroes/aleria-4.png"><span>Shelter Heroes</span></a>
+                <a class="nav-link" id="tab04-tab" data-toggle="pill" href="#tab04" role="tab"><img class="layout" src="img/layout/imp-dice.png"><span>Imp's Adventure</span></a>
+                <a class="nav-link" id="tab05-tab" data-toggle="pill" href="#tab05" role="tab"><img class="layout" src="img/layout/egg.png"><span>Eggs</span></a>
+                <a class="nav-link" id="tab06-tab" data-toggle="pill" href="#tab06" role="tab"><img class="layout" src="img/layout/images.png"><span>Others</span></a>
+                <a class="nav-link events" id="tab07-tab" data-toggle="pill" href="#tab07" role="tab"><img class="layout" src="img/layout/events.png"><span>Events</span></a>
+                <a class="nav-link" id="tab08-tab" data-toggle="pill" href="#tab08" role="tab"><img class="layout" src="img/resources/core-of-transcendence.png"><span>Cores</span></a>
+                <a class="nav-link bottom" id="tab99-tab" data-toggle="pill" href="#tab99" role="tab"><img class="layout" src="img/layout/undefined.png"><span>Settings</span></a>
+                <div id="cookiePanel">
+                    Page use cookies to store inserted data. Stored data can be managed under settings.
+                    <button type="button" class="btn btn-success" onclick="cookiesEnable(true);">Enable</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-9 container-col">
+              <div class="tab-content" id="nav-tabs">
+                <!-- ################################################################# -->
+                <!-- evets -->
+                <!-- ################################################################# -->
+                <div class="tab-pane show active" id="tab00" role="tabpanel">
+                    <div class="ih-container">
+                        <img src="img/logo.png" style="width: 30%; height: auto;">
+                        <h1>Heroes</h1>
+                        <ul>
+                        <li>Shows all heroes in table with some metadata (mainly hero max level)</li>
+                        <li>Click images in table header to filter heroes</li>
+                        <li>Useful when building food heroes</li>
+                        </ul>
+                        <h1>Leveling</h1>
+                        <ul>
+                        <li>Shows resource required to level up heroes</li>
+                        <li>Click on hero (or star in header) to toggle to required resources on next levels in total</li>
+                        <li>Click again on selected hero (star) to toggle back from total</li>
+                        </ul>
+                        <h1>Shelter Heroes</h1>
+                        <ul>
+                        <li>Show required 4* heroes for Shelter Missions</li>
+                        <li>Select hero class in left column to highlight required heros column</li>
+                        <li>Toggle faction in left column to mark heroes as ready for event</li>
+                        </ul>
+                        <h1>Imp&#39;s Adventure</h1>
+                        <ul>
+                        <li>UI for original vincitego Imp&#39;s Adventure Simulator. It use directly vincitego simulator</li>
+                        <li>All important inputs are highlated with blue color</li>
+                        <li>Images above inputs are clickable with special handling<ul>
+                        <li>Mushroom, Hut: toggle values (rotates)</li>
+                        <li>Star: star input dialog to easily set value without keyboard</li>
+                        <li>Dice: open dialog with &quot;Dice Calkulator&quot; </li>
+                        <li>Lucky Dice: toggle 0 and 1 lucky dice</li>
+                        </ul>
+                        </li>
+                        <li>Result values are updated directly by original script, but in the end post-processing reduce pression to make result more readable (values in range (0, 5) are not rounded)</li>
+                        <li>Inputs can be saved and loaded.</li>
+                        <li>Reset not affent saved state</li>
+                        <li>Inputs on page load with shown results are valid values for maximum F2P dices.</li>
+                        </ul>
+                        <h1>Eggs</h1>
+                        <ul>
+                        <li>Simply images from info grafic for Void Ark Navigation Compass eggs location</li>
+                        <li>Click on image to see image in &quot;fullscreen&quot;</li>
+                        </ul>
+                        <h1>Others</h1>
+                        <ul>
+                        <li>Other useful images</li>
+                        <li>Like Void Ark Navigation Compass sectors cost, which is unavailable during exploration: <ul>
+                        <li>Do I have enougth on 90% to go to next sector?</li>
+                        <li>Does finishing to 100% help?</li>
+                        </ul>
+                        </li>
+                        </ul>
+                        <h1>Cores</h1>
+                        <ul>
+                        <li>Simply store Compass of the Transcended spend cores and got spheres</li>
+                        <li>Just click on &#x1F340; or &#x1F494;, if You were lucky or not</li>
+                        <li>Visualize how mutch I&#39;m f<em>**</em>d with going Fate</li>
+                        </ul>
+                        <h1>Settings</h1>
+                        <ul>
+                        <li>Allow to manage (disable/remove) stored data in cookies - no way back to get stored data, like cores/spheres</li>
+                        </ul>
+
+                    </div>
+                </div>
+                <!-- ################################################################# -->
+                <!-- fusion heroes -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab01" role="tabpanel">
+                    <table id="fusion_heroes" class="fusion table-borderless w-auto" data-sticky-header="false">
+                        <thead>
+                            <tr>
+                                <th data-field="faction" data-formatter="imgLayoutFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/undefined.png" id="select-fusion-heroes-faction">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/undefined.png" onclick="selectFilterFusionHeroes('faction', 'undefined');" title="Any Faction">
+                                          <img class="hero" src="img/layout/shadow.png" onclick="selectFilterFusionHeroes('faction', 'Shadow');" title="Shadow">
+                                          <img class="hero" src="img/layout/fortress.png" onclick="selectFilterFusionHeroes('faction', 'Fortress');" title="Fortress">
+                                          <img class="hero" src="img/layout/abyss.png" onclick="selectFilterFusionHeroes('faction', 'Abyss');" title="Abyss">
+                                          <img class="hero" src="img/layout/forest.png" onclick="selectFilterFusionHeroes('faction', 'Forest');" title="Forest">
+                                          <img class="hero" src="img/layout/dark.png" onclick="selectFilterFusionHeroes('faction', 'Dark');" title="Dark">
+                                          <img class="hero" src="img/layout/light.png" onclick="selectFilterFusionHeroes('faction', 'Light');" title="Light">
+                                          <img class="hero" src="img/layout/transcendence.png"  onclick="selectFilterFusionHeroes('faction', 'Transcendence');" title="Transcendence">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="name" data-filter-control="input">
+                                    <input class="form-control" type="search" id="search-fusion-heroes-hero" placeholder="Hero">
+                                </th>
+                                <th data-field="class" data-formatter="imgLayoutFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/undefined.png" id="select-fusion-heroes-class">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/undefined.png" onclick="selectFilterFusionHeroes('class', 'undefined');" title="Any Class">
+                                          <img class="hero" src="img/layout/warrior.png" onclick="selectFilterFusionHeroes('class', 'Warrior');" title="Warrior">
+                                          <img class="hero" src="img/layout/assassin.png" onclick="selectFilterFusionHeroes('class', 'Assassin');" title="Assassin">
+                                          <img class="hero" src="img/layout/ranger.png" onclick="selectFilterFusionHeroes('class', 'Ranger');" title="Ranger">
+                                          <img class="hero" src="img/layout/mage.png" onclick="selectFilterFusionHeroes('class', 'Mage');" title="Mage">
+                                          <img class="hero" src="img/layout/priest.png" onclick="selectFilterFusionHeroes('class', 'Priest');" title="Priest">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="source-img" data-formatter="imgHeroShardsFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/heroes/shards/undefined.png" id="select-fusion-heroes-source-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/heroes/shards/undefined.png" onclick="selectFilterFusionHeroes('source-img', 'undefined');" title="Any Source">
+                                          <!-- <img class="hero" src="img/heroes/shards/shadow-normal-5.png"  onclick="selectFilterFusionHeroes('source-img', 'Shadow Normal 5&#9733;');" title="Shadow Normal 5&#9733;"> -->
+                                          <!-- <img class="hero" src="img/heroes/shards/forest-normal-5.png"  onclick="selectFilterFusionHeroes('source-img', 'Forest Normal 5&#9733;');" title="Forest Normal 5&#9733;"> -->
+                                          <!-- <img class="hero" src="img/heroes/shards/abyss-normal-5.png" onclick="selectFilterFusionHeroes('source-img', 'Abyss Normal 5&#9733;');" title="Abyss Normal 5&#9733;"> -->
+                                          <!-- <img class="hero" src="img/heroes/shards/fortress-normal-5.png"  onclick="selectFilterFusionHeroes('source-img', 'Fortress Normal 5&#9733;');" title="Fortress Normal 5&#9733;"> -->
+                                          <img class="hero" src="img/heroes/shards/any-normal-4-yes.png" onclick="selectFilterFusionHeroes('source-img', 'Any Normal 4* Yes');" title="Any Normal 4&#9733;">
+                                          <img class="hero" src="img/heroes/shards/any-normal-5-yes.png" onclick="selectFilterFusionHeroes('source-img', 'Any Normal 5* Yes');" title="Any Normal 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/any-elite-5-yes.png" onclick="selectFilterFusionHeroes('source-img', 'Any Elite 5* Yes');" title="Any Elite 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/dark-normal-5-yes.png" onclick="selectFilterFusionHeroes('source-img', 'Dark Normal 5* Yes');" title="Dark Normal 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/dark-elite-5-yes.png" onclick="selectFilterFusionHeroes('source-img', 'Dark Elite 5* Yes');" title="Dark Elite 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/light-normal-5-yes.png"  onclick="selectFilterFusionHeroes('source-img', 'Light Normal 5* Yes');" title="Light Normal 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/light-elite-5-yes.png"  onclick="selectFilterFusionHeroes('source-img', 'Light Elite 5* Yes');" title="Light Elite 5&#9733;">
+                                          <img class="hero" src="img/heroes/shards/transcendence-elite-5-yes.png"  onclick="selectFilterFusionHeroes('source-img', 'Transcendence Elite 5* Yes');" title="Transcendence Elite 5&#9733;">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="stars-5-img" data-formatter="imgHeroFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/stars-5-undefined.png" id="select-fusion-heroes-stars-5-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/stars-5-undefined.png" onclick="selectBoolFilterFusionHeroes('stars-5-img', 'Stars 5 undefined');" title="Stars 5 Any">
+                                          <img class="hero" src="img/layout/stars-5-yes.png" onclick="selectBoolFilterFusionHeroes('stars-5-img', 'Stars 5 Yes');" title="Stars 5 Yes">
+                                          <img class="hero" src="img/layout/stars-5-no.png" onclick="selectBoolFilterFusionHeroes('stars-5-img', 'Stars 5 No');" title="Stars 5 No">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="stars-6-img" data-formatter="imgHeroFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/stars-6-undefined.png" id="select-fusion-heroes-stars-6-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/stars-6-undefined.png" onclick="selectBoolFilterFusionHeroes('stars-6-img', 'Stars 6 undefined');" title="Stars 6 Any">
+                                          <img class="hero" src="img/layout/stars-6-yes.png" onclick="selectBoolFilterFusionHeroes('stars-6-img', 'Stars 6 Yes');" title="Stars 6 Yes">
+                                          <img class="hero" src="img/layout/stars-6-no.png" onclick="selectBoolFilterFusionHeroes('stars-6-img', 'Stars 6 No');" title="Stars 6 No">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="stars-9-img" data-formatter="imgHeroFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/stars-9-undefined.png" id="select-fusion-heroes-stars-9-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/stars-9-undefined.png" onclick="selectBoolFilterFusionHeroes('stars-9-img', 'Stars 9 undefined');" title="Stars 9 Any">
+                                          <img class="hero" src="img/layout/stars-9-yes.png" onclick="selectBoolFilterFusionHeroes('stars-9-img', 'Stars 9 Yes');" title="Stars 9 Yes">
+                                          <img class="hero" src="img/layout/stars-9-no.png" onclick="selectBoolFilterFusionHeroes('stars-9-img', 'Stars 9 No');" title="Stars 9 No">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="stars-10-img" data-formatter="imgHeroFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/stars-10-undefined.png" id="select-fusion-heroes-stars-10-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/stars-10-undefined.png" onclick="selectBoolFilterFusionHeroes('stars-10-img', 'Stars 10 undefined');" title="Stars 10 Any">
+                                          <img class="hero" src="img/layout/stars-10-yes.png" onclick="selectBoolFilterFusionHeroes('stars-10-img', 'Stars 10 Yes');" title="Stars 10 Yes">
+                                          <img class="hero" src="img/layout/stars-10-no.png" onclick="selectBoolFilterFusionHeroes('stars-10-img', 'Stars 10 No');" title="Stars 10 No">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-field="imprint-img" data-formatter="imgLayoutFormatter">
+                                    <div class="dropdown icon-dropdown">
+                                        <a href="#" data-toggle="dropdown">
+                                          <img class="hero" src="img/layout/stars-v4-undefined.png" id="select-fusion-heroes-imprint-img">
+                                        </a>
+                                        <div class="dropdown-menu icon-dropdown-menu vertical">
+                                          <img class="hero" src="img/layout/stars-v4-undefined.png" onclick="selectBoolFilterFusionHeroes('imprint-img', 'Stars v4 undefined');" title="Stars v4 Any">
+                                          <img class="hero" src="img/layout/stars-v4-yes.png" onclick="selectBoolFilterFusionHeroes('imprint-img', 'Stars v4 Yes');" title="Stars v4 Yes">
+                                          <img class="hero" src="img/layout/stars-v4-no.png" onclick="selectBoolFilterFusionHeroes('imprint-img', 'Stars v4 No');" title="Stars v4 No">
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- ################################################################# -->
+                <!-- leveling -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab02" role="tabpanel">
+                    <table id="leveling" class="leveling table-borderless w-auto">
+                        <thead>
+                            <tr>
+                                <th data-field="stars" data-formatter="lvlFormatter"></th>
+                                <th data-field="stars" data-formatter="lvlHeroFormatter">
+                                    <img id="lvlToggle" class="hero" src="img/layout/lvl-by-lvl.png" onclick="lvlClickNone();" title="Click on this star or on hero to see total resources for next levels (click again to toggle back)">
+                                </th>
+                                <th data-field="lvl">LVL</th>
+                                <th data-formatter="&#129189;">&#129189;</th>
+                                <th data-field="self" data-formatter="lvlShardsFormatter"><img class="hero" src="img/heroes/lvl-5.png" title="Hero 5&#9733;"></th>
+                                <th data-field="5" data-formatter="lvlShardsFormatter"><img class="hero" src="img/heroes/shards/dark-puppet-5.png" title="Faction 5&#9733;"></th>
+                                <th data-field="6" data-formatter="lvlShardsFormatter"><img class="hero" src="img//heroes/shards/dark-puppet-6.png" title="Faction 6&#9733;"></th>
+                                <th data-field="9" data-formatter="lvlShardsFormatter"><img class="hero" src="img//heroes/shards/any-puppet-9.png" title="Any 9&#9733;"></th>
+                                <th data-field="10" data-formatter="lvlShardsFormatter"><img class="hero" src="img//heroes/shards/any-puppet-10.png" title="Any 10&#9733;"></th>
+                                <th data-field="stone" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/stone.png" title="Hero Promotion Stone"></th>
+                                <th data-field="stone" data-formatter="lvlImgForFormatter"></th>
+                                <th data-field="spirit" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/spirit.png" title="Spirit"></th>
+                                <th data-field="spirit" data-formatter="lvlImgForFormatter"></th>
+                                <th data-field="gold" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/gold.png" title="Gold"></th>
+                                <th data-field="gold" data-formatter="lvlImgForFormatter"></th>
+                                <th data-field="stellar" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/stellar.png" title="Stellar Shard"></th>
+                                <th data-field="stellar" data-formatter="lvlImgForFormatter"></th>
+                                <!-- <th data-field="food" data-formatter="lvlFoodFormatter"></th> -->
+                                <!-- <th data-field="food-total" data-visible="false"></th> -->
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- ################################################################# -->
+                <!-- shelter heroes -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab03" role="tabpanel">
+                    <table id="shelter_heroes" class="shelter table-borderless w-auto">
+                        <thead>
+                            <tr>
+                                <th data-field="faction" data-formatter="shelterFacionFormatter">
+                                    <img class="layout" src="img/layout/reset.png" title="Reset" onclick="resetShelter();">
+                                </th>
+                                <th data-field="Warrior" data-formatter="imgHeroesFormatter"><img class="layout" src="img/layout/warrior.png" title="Warrior"></th>
+                                <th data-field="Assassin" data-formatter="imgHeroesFormatter"><img class="layout" src="img/layout/assassin.png" title="Assassin"></th>
+                                <th data-field="Ranger" data-formatter="imgHeroesFormatter"><img class="layout" src="img/layout/ranger.png" title="Ranger"></th>
+                                <th data-field="Mage" data-formatter="imgHeroesFormatter"><img class="layout" src="img/layout/mage.png" title="Mage"></th>
+                                <th data-field="Priest" data-formatter="imgHeroesFormatter"><img class="layout" src="img/layout/priest.png" title="Priest"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- ################################################################# -->
+                <!-- imp's adventure -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab04" role="tabpanel">
+                    <div class="imp-container ih-container">
+                        <div class="relative-container">
+                            <img class="floating-overlay" id="imp-minimap" src="img/layout/imp-minimap.png" width="500px" height="200px" style="left: 100px; top: 200px;">
+
+                            <img class="floating-overlay" id="imp-pos" src="img/layout/imp-pos-rect-big.png" width="100px">
+
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/dice-ordinary.png" data-toggle="modal" data-target="#diceCalculatorModal" style="width: 56px; left: 460px; top: 210px;">
+                            <input type="number" id="ordinary" class="imp-input floating-overlay" value="78" title="Ordinary Dice">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#ordinary', -1, 0, 999)"style="display: none; left: 458px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#ordinary', +1, 0, 999)" style="display: none; left: 488px; top: 300px;">
+
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/dice-lucky.png" onclick="toggleValue('#lucky', 0, 1)" style="width: 56px; left: 530px; top: 210px;">
+                            <input type="number" id="lucky" class="imp-input floating-overlay" value="0" title="Lucky Dice" style="width: 60px; left: 497px; top: 307px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#lucky', -1, 0, 999)"style="display: none; left: 528px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#lucky', +1, 0, 999)" style="display: none; left: 558px; top: 300px;">
+
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/imp-star.png" data-toggle="modal" data-target="#starsSelectModal" style="width: 54px; left: 391px; top: 211px;">
+                            <input type="number" id="stars" class="imp-input floating-overlay" value="0" title="Starting Stars" style="width: 60px; left: 625px; top: 20px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#stars', -1, 0, 9999)"style="display: none; left: 388px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#stars', +1, 0, 9999)" style="display: none; left: 418px; top: 300px;">
+
+                            <input type="number" id="startPos" value="0" title="Starting Position" style="display: none;">
+
+                            <div class="imp-radio mushroom1 floating-overlay" title="1. Starry Mushroom" id="layout-mushroom1" style="left: 210px; top: 67px; width: 80px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom1', -1, 1, 3)" style="float: left; width: 25px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom1', +1, 1, 3)" style="float: left; width: 25px; margin-left: 30px;">
+                            </div>
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/mushroom1.png" onclick="rotateValue('#mushroom1', +1, 1, 3)" style="width: 56px; left: 114px; top: 210px;">
+                            <input type="number" class="imp-input floating-overlay" id="mushroom1" value="1" readonly title="1. Starry Mushroom">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom1', -1, 1, 3)" style="display: none; left: 112px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom1', +1, 1, 3)" style="display: none; left: 143px; top: 300px;">
+
+                            <div class="imp-radio mushroom2 floating-overlay" title="2. Starry Mushroom" id="layout-mushroom2" style="left: 610px; top: 367px; width: 80px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom2', -1, 1, 3)" style="float: left; width: 25px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom2', +1, 1, 3)" style="float: left; width: 25px; margin-left: 30px;">
+                            </div>
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/mushroom2.png" onclick="rotateValue('#mushroom2', +1, 1, 3)" style="width: 56px; left: 183px; top: 210px;">
+                            <input type="number" class="imp-input floating-overlay" id="mushroom2" value="1" readonly title="1. Starry Mushroom" >
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom2', -1, 1, 3)" style="display: none; left: 181px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom2', +1, 1, 3)" style="display: none; left: 211px; top: 300px;">
+
+                            <div class="imp-radio mushroom3 floating-overlay" title="3. Starry Mushroom" id="layout-mushroom3" style="left: 10px; top: 467px; width: 80px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom3', -1, 1, 3)" style="float: left; width: 25px;">
+                                <img class="imp-plus-minus" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom3', +1, 1, 3)" style="float: left; width: 25px; margin-left: 30px;">
+                            </div>
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/mushroom3.png" onclick="rotateValue('#mushroom3', +1, 1, 3)" style="width: 56px; left: 251px; top: 210px;">
+                            <input type="number" class="imp-input floating-overlay" id="mushroom3" value="1" readonly title="1. Starry Mushroom" >
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-minus.png" onclick="updateValue('#mushroom3', -1, 1, 3)" style="display: none; left: 249px; top: 300px;">
+                            <img class="imp-plus-minus imp-center floating-overlay" src="img/layout/imp-plus.png" onclick="updateValue('#mushroom3', +1, 1, 3)" style="display: none; left: 279px; top: 300px;">
+
+
+                            <select id="activeTarot" class="imp-select select-right select-noarrow floating-overlay" value="None" title="Active Tarot" style="left: 665px; top: 264px;">
+                                <option value="None">&#9940; None</option>
+                                <option value="DoubleNextRoll">&#127808; Double Next Roll</option>
+                                <option value="RollTwice">&#127808; Roll Two Dice on Next Roll</option>
+                                <option value="DoubleStars">&#127808; Get Double Stars on Next Starry Mushroom</option>
+                                <option value="MoveBackwards">&#128148; Move Backwards on Next Roll</option>
+                            </select>
+
+                            <img class="imp-center clickable imp-circle floating-overlay" src="img/layout/imp-hut.png" onclick="toggleActiveTarot()" style="width: 56px; left: 320px; top: 203px; border: 0; border-radius: 15px;">
+                            <div class="dropup icon-dropdown floating-overlay" style="left: 317px; top: 267px;">
+                                <a href="#" data-toggle="dropdown">
+                                <img class="imp-center" src="img/layout/imp-none.png" id="select-activeTarot">
+                                </a>
+                                <div class="dropdown-menu imp-dropdown-menu">
+                                    <table class="hover-rows">
+                                        <tr class="clickable" onclick="setImpTarot('None');"><td><img src="img/layout/imp-none.png"></td><td>None</td></tr>
+                                        <tr class="clickable" onclick="setImpTarot('DoubleNextRoll');"><td><img src="img/layout/imp-2d.png"></td><td>Double Next Roll</td></tr>
+                                        <tr class="clickable" onclick="setImpTarot('RollTwice');"><td><img src="img/layout/imp-dd.png"></td><td>Roll Two Dice on Next Roll</td></tr>
+                                        <tr class="clickable" onclick="setImpTarot('DoubleStars');"><td><img src="img/layout/imp-2s.png"></td><td>Get Double Stars on Next Starry Mushroom</td></tr>
+                                        <tr class="clickable" onclick="setImpTarot('MoveBackwards');"><td><img src="img/layout/imp-back.png"></td><td>Move Backwards on Next Roll</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="btn-group btn-group-toggle floating-overlay" data-toggle="buttons" style="left: 310px; top: 105px; display: none;">
+                                <label class="btn btn-secondary" title="Inputs on map" onclick="impSetMapLayout();">
+                                    <input type="radio" name="options" id="imp-map-layout" autocomplete="off" checked > &#x25FB;
+                                </label>
+                                <label class="btn btn-secondary active" title="Inputs in center" onclick="impSetMiniMapLayout();">
+                                    <input type="radio" name="options" id="imp-center-layout" autocomplete="off" > &#x25A3;
+                                </label>
+                            </div>
+
+                            <input type="submit" value="Run 100k Simulations" class="btn btn-primary floating-overlay" onclick="impRunSim();" style="left: 250px; top: 342px; border: 7px solid;"></input>
+                            <input type="submit" value="Reset" class="btn btn-danger floating-overlay" onclick="resetImpAll();" style="left: 110px; top: 25px; border: 7px solid;"></input>
+                            <input type="submit" value="Save" class="btn btn-primary floating-overlay" onclick="saveImp();" style="left: 510px; top: 25px; border: 7px solid;"></input>
+                            <input type="submit" value="Load" class="btn btn-primary floating-overlay" onclick="loadImp();" style="left: 610px; top: 25px; border: 7px solid;"></input>
+
+                            <!-- row: 5 (height) col: 7 (width) 100x100  green: #74ca02-->
+                            <img id="imp-map" src="img/layout/imp-map.png" alt="Imp's Advenure" usemap="#impmap" width="700px" height="500px">
+
+                            <map name="impmap">
+                                <area shape="rect" id="imp-pos-0" coords="0,0,100,100"     href="javascript:impPosition(0)"  title="Start">
+                                <area shape="rect" id="imp-pos-1" coords="0,100,100,200"   href="javascript:impPosition(1)"  title="Spirit Workshop 1">
+                                <area shape="rect" id="imp-pos-2" coords="100,100,200,200" href="javascript:impPosition(2)"  title="Promotion Stone Workshop 1">
+                                <area shape="rect" id="imp-pos-3" coords="200,100,300,200" href="javascript:impPosition(3)"  title="Magic Dust Workshop 1">
+                                <area shape="rect" id="imp-pos-4" coords="200,0,300,100"   href="javascript:impPosition(4)"  title="Starry Mushroom 1">
+                                <area shape="rect" id="imp-pos-5" coords="300,0,400,100"   href="javascript:impPosition(5)"  title="Wishing Hut">
+                                <area shape="rect" id="imp-pos-6" coords="400,0,500,100"   href="javascript:impPosition(6)"  title="3-Star Hero Workshop">
+                                <area shape="rect" id="imp-pos-7" coords="400,100,500,200" href="javascript:impPosition(7)"  title="Spirit Workshop 2">
+                                <area shape="rect" id="imp-pos-8" coords="500,100,600,200" href="javascript:impPosition(8)"  title="Monster Soul Workshop">
+                                <area shape="rect" id="imp-pos-9" coords="600,100,700,200" href="javascript:impPosition(9)"  title="Magic Dust Workshop 2">
+                                <area shape="rect" id="imp-pos-10" coords="600,200,700,300" href="javascript:impPosition(10)" title="Fortune Hut">
+                                <area shape="rect" id="imp-pos-11" coords="600,300,700,400" href="javascript:impPosition(11)" title="Starry Mushroom 2">
+                                <area shape="rect" id="imp-pos-12" coords="600,400,700,500" href="javascript:impPosition(12)" title="Promotion Stone Workshop 2">
+                                <area shape="rect" id="imp-pos-13" coords="500,400,600,500" href="javascript:impPosition(13)" title="5-Star Hero Workshop">
+                                <area shape="rect" id="imp-pos-14" coords="400,400,500,500" href="javascript:impPosition(14)" title="Spirit Workshop 3">
+                                <area shape="rect" id="imp-pos-15" coords="300,400,400,500" href="javascript:impPosition(15)" title="Karma Hut">
+                                <area shape="rect" id="imp-pos-16" coords="200,400,300,500" href="javascript:impPosition(16)" title="Magic Dust Workshop 3">
+                                <area shape="rect" id="imp-pos-17" coords="100,400,200,500" href="javascript:impPosition(17)" title="4-Star Hero Workshop">
+                                <area shape="rect" id="imp-pos-18" coords="0,400,100,500"   href="javascript:impPosition(18)" title="Starry Mushroom 3">
+                                <area shape="rect" id="imp-pos-19" coords="0,300,100,400"   href="javascript:impPosition(19)" title="Chaos Stone Workshop">
+                                <area shape="rect" id="imp-pos-20" coords="0,200,100,300"   href="javascript:impPosition(20)" title="Lucky Hut">
+
+                                <area shape="circle" id="imp-pos-20" coords="250,258,40"   href="javascript:addOrdinaryDice(1)" title="&#x2795; Ordinary Dice">
+                                <area shape="circle" id="imp-pos-20" coords="285,295,10"   href="javascript:addOrdinaryDice(-1)" title="&#10134; Ordinary Dice">
+                                <area shape="circle" id="imp-pos-20" coords="450,258,40"   href="javascript:addLuckyDice(1)" title="&#x2795; Lucky Dice">
+                                <area shape="circle" id="imp-pos-20" coords="495,295,10"   href="javascript:addLuckyDice(-1)" title="&#10134; Lucky Dice">
+                            </map>
+                        </div>
+
+                        <!-- Modal Dice Calculator -->
+                        <div class="modal fade" id="diceCalculatorModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 530px;">
+                                <div class="modal-content">
+                                <div class="modal-body">
+                                    <table>
+                                        <tr>
+                                            <th colspan="4"><h2 style="float: left; margin: 0;">Dice Calculator</h2></th>
+                                        </tr>
+                                        <tr>
+                                            <td>Daily Reward</td>
+                                            <td><input id="diceCalcCheckboxDaily" type="checkbox" class="hero-checkbox diceCalcInput" checked></td>
+                                            <td><img class="hero"src="img/layout/imp-dice-4.png"></td>
+                                            <td>
+                                                <select id="diceCalcValueDaily" class="imp-select diceCalcInput" value="7" style="width: 11.5em; padding: 3px;">
+                                                    <option value="7">7 days - 168 hours</option>
+                                                    <option value="6">6 days - 144 hours</option>
+                                                    <option value="5">5 days - 120 hours</option>
+                                                    <option value="5">4 days - 96 hours</option>
+                                                    <option value="3">3 days - 72 hours</option>
+                                                    <option value="2">2 days - 48 hours</option>
+                                                    <option value="1">1 days - 24 hours</option>
+                                                    <option value="1">0 days - 0 hours</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shelter Missions</td>
+                                            <td><input id="diceCalcCheckboxShelter" type="checkbox" class="hero-checkbox diceCalcInput" checked></td>
+                                            <td><img class="hero"src="img/layout/imp-dice-5.png"></td>
+                                            <td>
+                                                <div class="images" style="margin: 0;">
+                                                    <img id="diceCalcShadow"    class="hero circle checkable checked diceCalcImgInput" onclick="toggleClass('#diceCalcShadow', 'checked');" src="img/layout/shadow.png">
+                                                    <img id="diceCalcFortress"  class="hero circle checkable checked diceCalcImgInput" onclick="toggleClass('#diceCalcFortress', 'checked');" src="img/layout/fortress.png">
+                                                    <img id="diceCalcAbyss"     class="hero circle checkable checked diceCalcImgInput" onclick="toggleClass('#diceCalcAbyss', 'checked');" src="img/layout/abyss.png">
+                                                    <img id="diceCalcForest"    class="hero circle checkable checked diceCalcImgInput" onclick="toggleClass('#diceCalcForest', 'checked');" src="img/layout/forest.png">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>By With Gems</td>
+                                            <td><input id="diceCalcCheckboxGems" type="checkbox" class="hero-checkbox diceCalcInput" checked></td>
+                                            <td><img class="hero"src="img/layout/imp-dice-1.png"></td>
+                                            <td><input id="diceCalcValueGems" type="number" class="imp-input diceCalcInput" value="30" style="width: 3em;"><span style="font-size: large; display: inline-block; font-size: large; margin: 8px;"> / 30</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Extra</td>
+                                            <td><input id="diceCalcCheckboxExtra" type="checkbox" class="hero-checkbox diceCalcInput"></td>
+                                            <td><img class="hero"src="img/layout/imp-dice.png"></td>
+                                            <td><input id="diceCalcValueExtra" type="number" class="imp-input diceCalcInput" value="35" style="width: 6em;"></td>
+                                        </tr>
+                                    </table>
+                                    <div style="float: right; margin: 5px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button id="diceCalcSet" type="button" class="btn btn-primary" data-dismiss="modal" onclick="diceCalcSet();" style="width: 8em;">Set (78)</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Modal Stars Selector -->
+                         <div class="modal fade" id="starsSelectModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 530px;">
+                                <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <img class="imp-center imp-circle" src="img/layout/imp-star.png" data-toggle="modal" data-target="#starsSelectModal" style="width: 54px;">
+
+                                        <div style="display: table; margin-left: auto; margin-right: auto; padding: 10px;">
+                                            <img class="imp-plus-minus" src="img/layout/imp-minus.png" onclick="updateValue('#starsSelected', -1, 0, 9999)" style="width: 56px; float: left;">
+                                            <input type="number" id="starsSelected" class="imp-input" value="0" title="Starting Stars" style="width: 3em; float: left; font-size: xx-large;">
+                                            <img class="imp-plus-minus" src="img/layout/imp-plus.png" onclick="updateValue('#starsSelected', +1, 0, 9999)" style="width: 56px; float: left;">
+                                        </div>
+
+                                        <input type="range" class="form-control-range" min="0" max="300" value="0" step="10" oninput="setValue('#starsSelected', this.value);">
+                                    </div>
+                                   
+                                    <div style="float: right; margin: 5px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button id="starsSelectSet" type="button" class="btn btn-primary" data-dismiss="modal" onclick="starsSelectSet();" style="width: 8em;">Set (0)</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="imp-chart" class="chart">
+                            <div class="row">
+                            <div class="col1">0</div>
+                            <div class="col-star"></div>
+                            <div class="col2 container"><span class="bar" id="bin1" style="width: 1%;">0.000%&nbsp;</span><span class="bar-value" id="bin1-value"></span></div>
+                            <div class="col-chance"></div>
+                            <div class="col-revard"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">80</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-80.png"></div>
+                            <div class="col2 container"><span class="bar" id="bin2" style="width: 1%;">0.001%&nbsp;</span><span class="bar-value" id="bin2-value"></span></div>
+                            <div class="col-chance"><span id="chance1">100.000</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-80.png" title="10 Heroic Scrolls"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">110</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-110.png"></div>
+                            <div class="col2 container"><span class="bar" id="bin3" style="width: 1%;">0.027%&nbsp;</span><span class="bar-value" id="bin3-value"></span></div>
+                            <div class="col-chance"><span id="chance2">99.999</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-110.png" title="Elite 5-star Shards"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">140</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-140.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin4" style="width: 2%;">1.832%&nbsp;</span><span class="bar-value" id="bin4-value"></span></div>
+                            <div class="col-chance"><span id="chance3">99.972</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-140.png" title="Limited Skin Chest"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">170</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-170.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin5" style="width: 16%;">16.238%&nbsp;</span><span class="bar-value" id="bin5-value"></span></div>
+                            <div class="col-chance"><span id="chance4">98.140</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-170.png" title="6-Star Puppet Chest"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">200</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-200.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin6" style="width: 48%;">47.512%&nbsp;</span><span class="bar-value" id="bin6-value"></span></div>
+                            <div class="col-chance"><span id="chance5">81.902</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-200.png" title="5-Star Hero Chest"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">230</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-230.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin7" style="width: 30%;">30.112%&nbsp;</span><span class="bar-value" id="bin7-value"></span></div>
+                            <div class="col-chance"><span id="chance6">34.390</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-230.png" title="Material Chest"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">260</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-260.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin8" style="width: 4%;">4.258%&nbsp;</span><span class="bar-value" id="bin8-value"></span></div>
+                            <div class="col-chance"><span id="chance7">4.278</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-260.png" title="L/D 5-Star Hero Chest"></div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col1">300</div>
+                            <div class="col-star"><img class="imp-star" src="img/layout/imp-s-300.png" ></div>
+                            <div class="col2 container"><span class="bar" id="bin9" style="width: 1%;">0.020%&nbsp;</span><span class="bar-value" id="bin9-value"></span></div>
+                            <div class="col-chance"><span id="chance8">0.020</span>%</div>
+                            <div class="col-revard"><img class="imp-star" src="img/layout/imp-r-300.png" title="9-Star Puppet Chest"></div>
+                            </div>
+
+                            <div class="footer">
+                                <div class="total">Average Stars: <span id="avgStars">216</span></div>
+                                <div class="total" id="strategy" style="display: none;">Simulator's Next Move: ...</div>
+                            </div>
+                        </div>  
+
+                        <div class="section" style="display: none;">
+                            <div class="row alt1">
+                                <div class="column"><label for="reward1">10 Heroic Scrolls: </label><input type="text" onchange="updateValues(); storeLocal(this);" id="reward1" size="5" value="1250"></input></div>
+                                <div class="column">Expected Value: <span id="value1">0</span></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="column"><label for="reward2">Elite 5-star Shards: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward2" size="5" value="2500"></input></div>
+                                <div class="column">Expected Value: <span id="value2">0</span></div>
+                            </div>
+                            
+                            <div class="row alt1">
+                                <div class="column"><label for="reward3">Limited Skin Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward3" size="5" value="3750"></input></div>
+                                <div class="column">Expected Value: <span id="value3">0</span></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="column"><label for="reward4">6-Star Puppet Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward4" size="5" value="1800"></input></div>
+                                <div class="column">Expected Value: <span id="value4">0</span></div>
+                            </div>
+                            
+                            <div class="row alt1">
+                                <div class="column"><label for="reward5">5-Star Hero Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward5" size="5" value="7500"></input></div>
+                                <div class="column">Expected Value: <span id="value5">0</span></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="column"><label for="reward6">Material Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward6" size="5" value="1000"></input></div>
+                                <div class="column">Expected Value: <span id="value6">0</span></div>
+                            </div>
+                            
+                            <div class="row alt1">
+                                <div class="column"><label for="reward7">L/D 5-Star Hero Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward7" size="5" value="10000"></input></div>
+                                <div class="column">Expected Value: <span id="value7">0</span></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="column"><label for="reward8">9-Star Puppet Chest: </label><input type="text" onchange="updateValues(); storeLocal(this)" id="reward8" size="5" value="8400"></input></div>
+                                <div class="column">Expected Value: <span id="value8">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3><a href="https://vincitego.github.io/imp/imp.html" target="_blank">Imp's Adventure Simulator >>></a></h3>
+                </div>
+                <!-- ################################################################# -->
+                <!-- void ark: eggs -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab05" role="tabpanel">
+                    <div class="ih-container">
+                        <div class="images">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os1.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os2.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os3.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os4.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os5.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os6.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os7.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os8.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os9.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os10.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os11.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os12.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os13.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os14.png">
+                        <img data-toggle="modal" data-target="#modal-img" class="rounded preview" src="img/void/egg-map-os15.png">
+                        </div>
+                    </div>
+                </div>
+                <!-- ################################################################# -->
+                <!-- others -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab06" role="tabpanel">
+                    <div class="ih-container">
+                        <div class="images">
+                            <img data-toggle="modal" data-target="#modal-img" class="rounded preview big-preview" src="img/void/void-ark-expedition-arrows.jpg">
+                        </div>
+                    </div>
+                </div>
+                <!-- ################################################################# -->
+                <!-- evets -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab07" role="tabpanel">
+                    <div class="ih-container">
+                        Events ...
+                    </div>
+                </div>
+                <!-- ################################################################# -->
+                <!-- cores -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab08" role="tabpanel">
+                    <div class="ih-container cores-container">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-1"><img class="hero" src="img/resources/core-of-transcendence.png"></div>
+                            <div class="col-5 label">Core of Transcendence</div>
+                            <div class="col-2"><input id="transcendenceCores" type="number" value="0" onchange="transcendenceCalc();"></div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-1"><img class="hero" src="img/resources/transcendence-sphere.png"></div>
+                            <div class="col-5 label" >Transcendence Sphere</div>
+                            <div class="col-2"><input id="transcendenceSphere" type="number" value="0" onchange="transcendenceCalc();"></div>
+                            <div class="col-1"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col"><button type="button" class="btn btn-primary" onclick="transcendenceUnlucky();" title="Hero" style="float: right;">&#x1F494;</button></div>
+                            <div class="col"><button type="button" class="btn btn-primary" onclick="transcendenceLucky();" title="Transcendence Sphere">&#x1F340;</button></div>
+                        </div>
+
+                        <div class="row spacer"></div>
+
+                        <div class="row">
+                            <div class="col"><img class="rounded transcendence" src="img/layout/fate.png"></div>
+                            <div class="col"><img class="rounded transcendence" src="img/layout/guidance.png"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col"><span class="transcendenceValue" id="transcendenceFate">1.24</span></div>
+                            <div class="col"><span class="transcendenceValue" id="transcendenceGuidance">2.87</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col"><img class="hero" src="img/resources/transcendence-sphere.png"></div>
+                            <div class="col"><img class="hero" src="img/resources/transcendence-sphere.png"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ################################################################# -->
+                <!-- settings -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab99" role="tabpanel">
+                    <div class="ih-container settings-container">
+                        <div class="row" id="disableCookies">
+                            <div class="col-lg" style="margin-top: 0.5em;">
+                                Disable cookies & Remove all stored data
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-danger" onclick="cookiesDisableByUser();">Disable</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg">
+                                Shelter Heroes
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-primary" onclick="resetCookies('shelter-');">Hard Reset</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg">
+                                Imp's Adventure
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-primary" onclick="resetCookies('imp-');">Hard Reset</button>
+                            </div>
+                        </div>
+                        <div class="row events">
+                            <div class="col-lg">
+                                Events
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-primary" onclick="resetCookies('events-');">Hard Reset</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg">
+                                Cores
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-primary" onclick="resetCookies('cores-');">Hard Reset</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="font-size: small;">
+                                Disabling or reseting cookies not update page content. Relead page to apply.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="modal fade" id="modal-img" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document" style="max-width: 100%;">
+                <div class="modal-content" style="background-color: transparent;">
+                    <div class="modal-body">
+                        <img id="modal-img-content" class="modal-body rounded" src="..." style="width: auto; height: 80vh; padding: 0; margin: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+<script>
+    var cookiesEnabled = Cookies.get('enabled')
+    console.log('cookiesEnabled', cookiesEnabled)
+
+    var startTab = location.hash.replace(/^#/, '');  // ^ means starting, meaning only match the first hash
+    if (startTab) {
+        console.log('startTab', startTab)
+        $('.nav-pills a[href="#' + startTab + '"]').tab('show');
+    } 
+
+    // #################################################################
+    // modal img
+    // #################################################################
+
+    $('#modal-img').on('show.bs.modal', function (event) {
+        $('#modal-img-content').attr('src', $(event.relatedTarget).attr('src'))
+    })
+
+    $('#modal-img').on('click', function (event) {
+        event.preventDefault();
+        $('#modal-img').modal('hide');
+    })
+
+    // #################################################################
+    // common
+    // #################################################################
+
+    function cookiesEnable(value) {
+        cookiesEnabled = value
+        if (value) {
+            Cookies.set('enabled', true)
+            $('#cookiePanel').css('display', 'none')
+        } else {
+            let all = Cookies.get()
+            for (var name in all) {
+                Cookies.remove(name)
+            }
+            $('#cookiePanel').css('display', 'block')
+        }
+    }
+    function cookiesDisableByUser() {
+        if (confirm('By disabling cookies, all stored data will be removed.') == true) {
+            cookiesEnable(false)
+        }
+    }
+
+    cookiesEnable(cookiesEnabled);
+
+    function resetCookies(prefix) {
+        let all = Cookies.get()
+        for (var name in all) {
+            if (name.startsWith(prefix)){
+                Cookies.remove(name)
+            }
+        }
+    }
+
+    function setCookie(name, value) {
+        //console.log('setCookie', cookiesEnabled, name, value)
+        if (cookiesEnabled) {
+            Cookies.set(name, value)
+        }
+    }
+
+    function getCookie(name, missing) {
+        let value = Cookies.get(name)
+        //console.log('getCookie', name, value, missing)
+
+        if (value === undefined) {
+            return missing
+        } else {
+            return value
+        }
+    }
+
+    function toggleClass(selector, classname) {
+        $(selector).toggleClass(classname);
+    }
+
+    function imgSrcName(prefix, value) {
+        return `${prefix}/${value.replaceAll(' ', '-').replace('&#9733;', '').replace('*', '').toLowerCase() + '.png'}` 
+    }
+
+    function imgName(imgclass, prefix, value) {
+        return `<img class="${imgclass}" src="${imgSrcName(prefix, value)}" title="${value}">`
+    }
+
+    function imgFormatter(imgclass, prefix, value, row) {
+        if (value) {
+            return imgName(imgclass, prefix, value);
+        } else {
+            return ''
+        }
+    }
+
+    function imgHeroFormatter(value, row) {
+        return imgFormatter("hero", "img/heroes", value, row);
+    }
+    
+    function imgHeroShardsFormatter(value, row) {
+        return imgFormatter("hero", "img/heroes/shards", value, row);
+    }
+
+    function imgLayoutFormatter(value, row) {
+        return imgFormatter("layout", "img/layout", value, row);
+    }
+
+    (function () {                                             
+        var dropdownMenu; // hold onto the drop down menu   
+
+        // and when you show it, move it to the body      
+        $(window).on('show.bs.dropdown', function (e) {
+            dropdownMenu = $(e.target).find('.dropdown-menu'); // grab the menu 
+
+            $('body').append(dropdownMenu.detach()); // detach it and append it to the body
+
+            var eOffset = $(e.target).offset(); // grab the new offset position
+
+            dropdownMenu.css({ // make sure to place it where it would normally go (this could be improved)
+                'display': 'block',
+                    'top': eOffset.top + $(e.target).outerHeight(),
+                    'left': eOffset.left
+            });
+        });
+
+        // and when you hide it, reattach the drop down, and hide it normally                                                   
+        $(window).on('hide.bs.dropdown', function (e) {
+            $(e.target).append(dropdownMenu.detach());
+            dropdownMenu.hide();
+        });
+    })();
+
+    // #################################################################
+    // fusion_heroes
+    // #################################################################
+    var $table_fusion_heroes = $('#fusion_heroes')
+
+    $(function() {
+        $table_fusion_heroes.bootstrapTable({url: 'data/fusion_heroes.json'})
+    })
+
+    var $fusionHeroesFilterData = {
+        'faction': "undefined",
+        'name': "",
+        'class': "undefined",
+        'source-img': "undefined",
+        'stars-4-img': "undefined",
+        'stars-5-img': "undefined",
+        'stars-6-img': "undefined",
+        'stars-9-img': "undefined",
+        'stars-10-img': "undefined",
+        'imprint-img': "undefined",
+    };
+
+    function isNotNull(value) {
+        return value != null
+    }
+
+    function filterFusionHeroesRow(row, filter) {
+        //console.log([row, filter])
+
+        let showRow = true;
+        let hideRow = false;
+
+        if (filter['faction'] !== 'undefined' && row['faction'] !== filter['faction']) {
+            return hideRow;
+        }
+        if (filter['class'] !== 'undefined' && row['class'] !== filter['class']) {
+            return hideRow;
+        }
+        if (filter['source-img'] !== 'undefined' && row['source-img'] !== filter['source-img']) {
+            return hideRow;
+        }
+        if (filter['name'] !== '' && row['name'].toLowerCase().includes(filter['name']) === false) {
+            return hideRow;
+        }
+        if (filter['stars-4-img'] !== 'undefined' && filter['stars-4-img'] !== isNotNull(row['stars-4-img'])) {
+            return hideRow;
+        }
+        if (filter['stars-5-img'] !== 'undefined' && filter['stars-5-img'] !== isNotNull(row['stars-5-img'])) {
+            return hideRow;
+        }
+        if (filter['stars-6-img'] !== 'undefined' && filter['stars-6-img'] !== isNotNull(row['stars-6-img'])) {
+            return hideRow;
+        }
+        if (filter['stars-9-img'] !== 'undefined' && filter['stars-9-img'] !== isNotNull(row['stars-9-img'])) {
+            return hideRow;
+        }
+        if (filter['stars-10-img'] !== 'undefined' && filter['stars-10-img'] !== isNotNull(row['stars-10-img'])) {
+            return hideRow;
+        }
+        if (filter['imprint-img'] !== 'undefined' && filter['imprint-img'] !== isNotNull(row['imprint-img'])) {
+            return hideRow;
+        }
+
+        //console.log('show')
+        return showRow;
+    }
+
+    function filterFusionHeroes() {
+        //console.log('filter', $fusionHeroesFilterData)
+        $table_fusion_heroes.bootstrapTable('filterBy', $fusionHeroesFilterData, { 'filterAlgorithm': filterFusionHeroesRow })
+    }
+
+    $table_fusion_heroes.on('input','#search-fusion-heroes-hero',function(){
+        $fusionHeroesFilterData['name'] = $(this).val().toLowerCase();
+        filterFusionHeroes();
+    });
+
+    function selectFilterFusionHeroes(what, value) {
+        //console.log('selectFilterFusionHeroes', what, value)
+        let preffix;
+        if (what === 'source-img') {
+            preffix = 'img/heroes/shards'
+        } else {
+            preffix = "img/layout"
+        }
+        $('#select-fusion-heroes-' + what).attr("src", imgSrcName(preffix, value)).attr("title", 'Filter ' + value.replace(' Yes', ''));
+        $fusionHeroesFilterData[what] = value.replace('*', '&#9733;').replace(' Yes', '');
+        filterFusionHeroes();
+    }
+
+    function selectBoolFilterFusionHeroes(what, value) {
+        //console.log('selectBoolFilterFusionHeroes', what, value)
+        $('#select-fusion-heroes-' + what).attr("src", imgSrcName("img/layout", value)).attr("title", 'Filter ' + value.replace('undefined', 'Any'));
+        if (value.endsWith('undefined')) {
+            $fusionHeroesFilterData[what] = 'undefined'
+        } else {
+            $fusionHeroesFilterData[what] = value.endsWith('Yes');
+        }
+        filterFusionHeroes();
+    }
+
+    // #################################################################
+    // shelter_heroes
+    // #################################################################
+
+    var $table_shelter_heroes = $('#shelter_heroes')    
+
+    function shelterFacionFormatter(value, row) {
+        if (value) {
+            let _value = '<div class="shelter-facion-left-header">'
+            //_value += imgFormatter("layout", "img/layout", value, row);
+            _value += `<img class="layout shelter-faction-toggle" id="select-shelte-done-${value.toLowerCase()}" src="${imgSrcName("img/layout", value)}" onclick="toggleShelterFactionDone('${value}');" title="Mark faction as ready">`
+            _value += `
+            <div class="dropright icon-dropdown">
+                <a href="#" data-toggle="dropdown">
+                    <img class="layout" src="img/layout/undefined.png" id="select-shelte-class-${value.toLowerCase()}">
+                </a>
+                <div class="dropdown-menu icon-dropdown-menu horizontal">
+                    <img class="layout" src="img/layout/undefined.png" onclick="selectShelterClass('${value}', 'undefined');" title="Any Class">
+                    <img class="layout" src="img/layout/warrior.png" onclick="selectShelterClass('${value}', 'Warrior');" title="Warrior">
+                    <img class="layout" src="img/layout/assassin.png" onclick="selectShelterClass('${value}', 'Assassin');" title="Assassin">
+                    <img class="layout" src="img/layout/ranger.png" onclick="selectShelterClass('${value}', 'Ranger');" title="Ranger">
+                    <img class="layout" src="img/layout/mage.png" onclick="selectShelterClass('${value}', 'Mage');" title="Mage">
+                    <img class="layout" src="img/layout/priest.png" onclick="selectShelterClass('${value}', 'Priest');" title="Priest">
+                </div>
+            </div>
+            `
+            _value += '</div>'
+            return _value
+        } else {
+            return ''
+        }
+    }
+
+    function imgHeroesFormatter(value, row, index, field) {
+        if (value) {
+            let faction = row["faction"].toLowerCase()
+            let classname = field.toLowerCase()
+            let _value = `<div class="shelter-heroes images f-${faction} ${classname}">`
+            value.forEach(hero => { 
+                _value += imgName("hero", "img/heroes", hero);
+            });
+            _value += '</div>'
+            return _value
+        } else {
+            return ''
+        }
+    }
+
+    function selectShelterClass(faction, value) {
+        setCookie('shelter-' + faction, value)
+
+        let _faction = faction.toLowerCase()
+        let _class = value.toLowerCase()
+        //console.log('selectShelterClass', faction, value, `.shelter-heroes.${_faction}.${_class}`)
+
+        $('#select-shelte-class-' + _faction).attr("src", imgSrcName("img/layout", value)).attr("title", 'Filter ' + value.replace('*', '&#9733;'));
+        $(`.shelter-heroes.f-${_faction}`).parent().removeClass('active-shelter');
+        $(`.shelter-heroes.f-${_faction}.${_class}`).parent().addClass('active-shelter');
+    }
+
+    function setShelterFactionDone(faction, value) {
+        let _faction = faction.toLowerCase()
+        setCookie('shelter-' + faction + '-done', value)
+
+        //console.log('toggleShelterFactionDone', faction, value)
+        if (value) {
+            $(`.shelter-heroes.f-${_faction}`).parent().addClass('ready')
+            $('#select-shelte-done-' + _faction).addClass('ready')
+        } else {
+            $(`.shelter-heroes.f-${_faction}`).parent().removeClass('ready')
+            $('#select-shelte-done-' + _faction).removeClass('ready')
+        }
+        
+    }
+
+    function toggleShelterFactionDone(faction) {
+        setShelterFactionDone(faction, $('#select-shelte-done-' + faction.toLowerCase()).hasClass('ready') == false)
+    }
+
+    function resetShelter() {
+        ['Shadow', 'Fortress', 'Abyss', 'Forest'].forEach( faction => {
+            selectShelterClass(faction, 'undefined');
+            setShelterFactionDone(faction, false);
+        })
+    }
+
+    function loadShelter() {
+        ['Shadow', 'Fortress', 'Abyss', 'Forest'].forEach( faction => {
+            selectShelterClass(faction, getCookie('shelter-' + faction, 'undefined'))
+            setShelterFactionDone(faction, getCookie('shelter-' + faction + '-done', 'false') === 'true');
+        })
+    }
+
+    $(function() {
+        $table_shelter_heroes.bootstrapTable({url: 'data/shelter_heroes.json', onPostBody: loadShelter})
+    })
+
+    // #################################################################
+    // imp's adventure
+    // #################################################################
+
+    function impPosition(pos) {
+        let area = $(`#imp-pos-${pos}`)
+        let coords = area.attr('coords').split(',')
+    
+        $('#startPos').val(pos);
+
+        let imp = $(`#imp-pos`)
+        imp.attr("title", area.attr('title'));
+        imp.css({"left":`${parseInt(coords[0])}px`,"top":`${parseInt(coords[1])}px`});
+    }
+    impPosition(0);
+
+    $('.imp-radio.mushroom1 input[type="radio"]').each(function() {
+        this.addEventListener('change', function() {
+            $('#mushroom1').val(this.value);
+        })
+    });
+    $('.imp-radio.mushroom2 input[type="radio"]').each(function() {
+        this.addEventListener('change', function() {
+            $('#mushroom2').val(this.value);
+        })
+    });
+    $('.imp-radio.mushroom3 input[type="radio"]').each(function() {
+        this.addEventListener('change', function() {
+            $('#mushroom3').val(this.value);
+        })
+    });
+
+    function mushroomLevel(mushroomId, level) {
+        $(mushroomId).val(level);
+    }
+
+    function addOrdinaryDice(value) {
+        $('#ordinary').val(parseInt($('#ordinary').val()) + value);
+    }
+
+    function addLuckyDice(value) {
+        $('#lucky').val(parseInt($('#lucky').val()) + value);
+    }
+
+    function updateValue(selector, value, min, max) {
+        let newValue = parseInt($(selector).val()) + value;
+        if (newValue >= min && newValue <= max) {
+            $(selector).val(newValue).trigger('input');
+        }
+    }
+
+    function setValue(selector, value) {
+        $(selector).val(value).trigger('input');
+    }
+
+    function toggleValue(selector, first, second) {
+        let current = parseInt($(selector).val());
+        if (current === first) {
+            $(selector).val(second);
+        } else {
+            $(selector).val(first);
+        }
+    }
+
+    function toggleActiveTarot() {
+        var activeTarotValues = ['None', 'DoubleNextRoll', 'RollTwice', 'DoubleStars', 'MoveBackwards']
+
+        let next = activeTarotValues.indexOf($('#activeTarot').val()) + 1;
+        if (next === 5) {
+            next = 0
+        }
+
+        setImpTarot(activeTarotValues[next])
+    }
+
+    function rotateValue(selector, value, min, max) {
+        let newValue = parseInt($(selector).val()) + value;
+        if (newValue >= min && newValue <= max) {
+            $(selector).val(newValue);
+        }
+        else if (newValue < min) {
+            $(selector).val(max);
+        }
+        else if (newValue > max) {
+            $(selector).val(min);
+        }
+    }
+
+    function setImpTarot(value) {
+        var tarotsImg = {
+            'None': 'imp-none',
+            'DoubleNextRoll': 'imp-2d',
+            'RollTwice': 'imp-dd',
+            'DoubleStars': 'imp-2s',
+            'MoveBackwards': 'imp-back',
+        }
+
+        $('#activeTarot').val(value).change();
+        $('#select-activeTarot').attr('src', `img/layout/${tarotsImg[value]}.png`)
+    }
+
+    function impSetMapLayout() {
+        $('#stars').css({'width': '60px', 'left': '625px', 'top': '20px'})
+        $('#ordinary').css({'width': '45px', 'left': '290px', 'top': '307px'})
+        $('#lucky').css({'width': '45px', 'left': '497px', 'top': '307px'})
+        $('#layout-mushroom1').css({'display': 'block'})
+        $('#mushroom1').css({'width': '25px', 'left': '238px', 'top': '60px'})
+        $('#layout-mushroom2').css({'display': 'block'})
+        $('#mushroom2').css({'width': '25px', 'left': '637px', 'top': '360px'})
+        $('#layout-mushroom3').css({'display': 'block'})
+        $('#mushroom3').css({'width': '25px', 'left': '37px', 'top': '460px'})
+        $('#activeTarot').css({'left': '665px', 'top': '264px', 'display': 'block'})
+        $('#imp-minimap').css({'display': 'none'})
+        $('.imp-center').css({'display': 'none'})
+    }
+    //impSetMapLayout()
+    function impSetMiniMapLayout() {
+        $('#stars').css({'width': '60px', 'left': '388px', 'top': '267px'})
+        $('#ordinary').css({'width': '60px', 'left': '458px', 'top': '267px'})
+        $('#lucky').css({'width': '60px', 'left': '528px', 'top': '267px'})
+        $('#layout-mushroom1').css({'display': 'none'})
+        $('#mushroom1').css({'width': '60px', 'left': '112px', 'top': '267px'})
+        $('#layout-mushroom2').css({'display': 'none'})
+        $('#mushroom2').css({'width': '60px', 'left': '181px', 'top': '267px'})
+        $('#layout-mushroom3').css({'display': 'none'})
+        $('#mushroom3').css({'width': '60px', 'left': '249px', 'top': '267px'})
+        $('#activeTarot').css({'display': 'none'})
+        $('#imp-minimap').css({'display': 'block'})
+        $('.imp-center').css({'display': 'block'})
+    }
+    impSetMiniMapLayout()
+
+    function diceCalc() {
+        let dice = 0
+        if($("#diceCalcCheckboxDaily").is(':checked')) {
+            dice += 4 * parseInt($("#diceCalcValueDaily").val())
+        }
+        if($("#diceCalcCheckboxShelter").is(':checked')) { 
+            if($("#diceCalcShadow").hasClass('checked')) {
+                dice += 5
+            }
+            if($("#diceCalcFortress").hasClass('checked')) {
+                dice += 5
+            }
+            if($("#diceCalcAbyss").hasClass('checked')) {
+                dice += 5
+            }
+            if($("#diceCalcForest").hasClass('checked')) {
+                dice += 5
+            }
+        }
+        if($("#diceCalcCheckboxGems").is(':checked')) {
+            dice += parseInt($("#diceCalcValueGems").val())
+        }
+        if($("#diceCalcCheckboxExtra").is(':checked')) {
+            dice += parseInt($("#diceCalcValueExtra").val())
+        }
+        
+        return dice
+    }
+
+    function diceCalcSet() {
+        $('#ordinary').val(diceCalc());
+    }
+
+    $('.diceCalcInput').on('input', function(){
+        $('#diceCalcSet').html('Set (' + diceCalc() + ')')
+    });
+    $('.diceCalcImgInput').on('click', function(){
+        $('#diceCalcSet').html('Set (' + diceCalc() + ')')
+    });
+
+    function starsSelectSet() {
+        $('#stars').val($('#starsSelected').val());
+    }
+
+    $('#starsSelected').on('input', function(){
+        $('#starsSelectSet').html('Set (' + $('#starsSelected').val() + ')')
+    });
+
+    function resetImp() {
+        for (let i = 9; i > 0; i--) {
+            document.getElementById('bin' + i + '-value').innerHTML = '';
+		}
+        for (let i = 8; i > 0; i--) {
+			document.getElementById('chance' + i).innerHTML = '---';
+		}
+        for (let i = 9; i > 0; i--) {
+			let b = document.getElementById('bin' + i);
+            b.innerHTML = '&nbsp;';
+            b.style.width = '1%';
+		}
+        document.getElementById('avgStars').innerHTML = '';
+        document.getElementById('strategy').innerHTML = 'Simulator\'s Next Move:';
+    }
+
+    function setVal(selector, value) {
+        $(selector).val(value);
+    }
+
+    function saveImp() {
+        setCookie('imp-ordinary', $('#ordinary').val())
+        setCookie('imp-lucky', $('#lucky').val())
+        setCookie('imp-stars', $('#stars').val())
+        setCookie('imp-activeTarot', $('#activeTarot').val())
+        setCookie('imp-mushroom1', $('#mushroom1').val())
+        setCookie('imp-mushroom2', $('#mushroom2').val())
+        setCookie('imp-mushroom3', $('#mushroom3').val())
+        setCookie('imp-startPos', $('#startPos').val())
+    }
+
+    function loadImp() {
+        resetImpAll()
+
+        $('#ordinary').val(getCookie('imp-ordinary', 0))
+        $('#lucky').val(getCookie('imp-lucky', 0))
+        $('#stars').val(getCookie('imp-stars', 0))
+        setImpTarot(getCookie('imp-activeTarot', 'None'));
+        $('input:radio[name=options-mushroom1]').val([getCookie('imp-mushroom1', 1)]);
+        $('input:radio[name=options-mushroom2]').val([getCookie('imp-mushroom2', 1)]);
+        $('input:radio[name=options-mushroom3]').val([getCookie('imp-mushroom3', 1)]);
+        $('#mushroom1').val(getCookie('imp-mushroom1', 1))
+        $('#mushroom2').val(getCookie('imp-mushroom2', 1))
+        $('#mushroom3').val(getCookie('imp-mushroom3', 1))
+        impPosition(getCookie('imp-startPos', 1))
+    }
+
+    function resetImpAll() {
+        resetImp();
+        $('#ordinary').val(0);
+        $('#lucky').val(0);
+        $('#stars').val(0);
+        setImpTarot('None');
+        impPosition(0);
+        $('input:radio[name=options-mushroom1]').val(['1']);
+        $('input:radio[name=options-mushroom2]').val(['1']);
+        $('input:radio[name=options-mushroom3]').val(['1']);
+        $('#mushroom1').val(1);
+        $('#mushroom2').val(1);
+        $('#mushroom3').val(1);
+    }
+
+    function roundImpPercent() {
+        let s = document.getElementById('avgStars');
+        if (s.innerHTML === '') {
+            return
+        }
+        //s.innerHTML = Math.round(parseFloat(s.innerHTML));
+
+        for (let i = 9; i > 0; i--) {
+			let b = document.getElementById('bin' + i);
+            if (b.innerHTML !== '&nbsp;') {
+                let bv = document.getElementById('bin' + i + '-value');
+
+                let num = parseFloat(b.innerHTML)
+                if (num > 0.009 && num < 10.0) {
+                    bv.innerHTML = parseFloat(num).toFixed(2) + '%';
+                } else {
+                    bv.innerHTML = Math.round(num) + '%';
+                }
+                b.innerHTML = '&nbsp;';
+            }
+		}
+        for (let i = 8; i > 0; i--) {
+			let ch = document.getElementById('chance' + i)
+            ch.innerHTML = Math.round(parseFloat(ch.innerHTML));
+		}  
+    }
+    roundImpPercent();
+
+    $('#avgStars').on('DOMSubtreeModified', function(){
+        roundImpPercent();
+    });
+
+
+    function impRunSim() {
+        console.log({
+            "ordDice": parseInt(document.getElementById('ordinary').value),
+            "luckDice": parseInt(document.getElementById('lucky').value),
+            "stars": parseInt(document.getElementById('stars').value),
+            "pos": parseInt(document.getElementById('startPos').value),
+            "mushroom1": parseInt(document.getElementById('mushroom1').value),
+            "mushroom2": parseInt(document.getElementById('mushroom2').value),
+            "mushroom3": parseInt(document.getElementById('mushroom3').value),
+        })
+
+        resetImp();
+        runImpSim();
+    }
+
+    // #################################################################
+    // Void Ark
+    // #################################################################
+
+    // #################################################################
+    // leveling
+    // #################################################################
+
+    var $table_leveling = $('#leveling')    
+
+    var $leveling_data = undefined;
+    var $leveling_data_total = {};
+    var $leveling_level = 'undefined';
+
+    function lvlGenerateTotalLvlData(stars) {
+        let $leveling_data_total_partial = [];
+        let total = {
+            "stars": "",
+            "lvl": 0,
+            "self": 0,
+            "5": 0,
+            "6": 0,
+            "9": 0,
+            "10": 0,
+            "stone": 0,
+            "spirit": 0,
+            "gold": 0,
+            "stellar": 0,
+        }
+        let found = stars === 'none';
+
+        $leveling_data.forEach(row => {
+            total['stars'] = row.stars
+            total['lvl'] = row.lvl 
+            if (found) {    
+                $.each( row, function( key, value ) {
+                    if (key !== 'stars' && key != 'lvl') {
+                        total[key] += Number(value)
+                    }
+                });
+            }
+            if (row.stars === stars) {
+                found = true
+            }
+            $leveling_data_total_partial.push(jQuery.extend({}, total));
+        });
+
+        return $leveling_data_total_partial
+    }
+
+    function lvlGenerateTotalData(data) {
+        $leveling_data = jQuery.extend(true, [], data);
+        $leveling_data_total['none'] = lvlGenerateTotalLvlData('none');
+        $leveling_data.forEach(row => {
+            $leveling_data_total[row.stars] = lvlGenerateTotalLvlData(row.stars);
+        })
+
+        //console.log($leveling_data_total)
+    }
+
+    function lvlUpdateTable(data) {
+        //console.log('lvlUpdateTable', data)
+        data.forEach((row, index) => {
+            $table_leveling.bootstrapTable('updateRow', {
+                index: index,
+                row: row
+            })
+        })
+    }
+
+    function lvlSelectHero(stars) {
+        $leveling_level = stars;
+        if (stars === 'undefined') {
+            lvlUpdateTable($leveling_data);
+        } else {
+            lvlUpdateTable($leveling_data_total[stars]);
+        }
+    }
+
+    function lvlClickToggle(value, element) {
+        //console.log('lvlClickToggle', value, element)
+        if (element.hasClass('lvl-active')) {
+            element.removeClass('lvl-active');
+            lvlSelectHero('undefined');
+        } else {
+            $('.lvl-active').removeClass('lvl-active');
+            element.addClass('lvl-active');
+            lvlSelectHero(value);
+        }
+    }
+
+    function lvlClickNone() {
+        lvlClickToggle('none', $('#lvlToggle'));
+    }
+
+    function lvlClickCell(field, value, row, $element) {
+        //console.log("lvlClickCell", field, value, row, $element)
+
+        if (field !== 'stars') return
+        
+        var lvlClickedHero = $($element).find('.hero-img');
+        if (!lvlClickedHero) return
+
+        lvlClickToggle(value, lvlClickedHero);
+    }
+
+    function lvlFormatter(value, row, index, field) {
+        if (isNaN(value)) {
+            return value
+        } else {
+            return value + '&#9733;'
+        }
+    }
+
+    function lvlHeroFormatter(value, row, index, field) {
+        let classes = "hero hero-img lvl lvl-" + value.toLowerCase();
+        if ($leveling_level !== 'undefined' && $leveling_level === row.stars) {
+            classes += ' lvl-active'
+        }
+
+        return `<img class="${classes}" src="img/heroes/lvl-${value.toLowerCase()}.png" title="Hero ${value}">`
+    }
+
+    function lvlShardsFormatter(value, row, index, field) {
+        if (!value) {
+            return ""
+        }
+
+        return `<div class="relative-container lvl-shards lvl-shards-${field}"> 
+            <img class="hero floating-overlay" src="img/heroes/shards/lvl-frame-${field}.png">
+            <span class="resource-text">${value}</span> 
+        </div>`
+    }
+
+    function lvlBigNumberFormatter(value, row, index, field) {
+        if (!value) {
+            return '<span class="resource-text big-numner"></span>'
+        }
+
+        //return `<div class="resource"><span>${bigNumber(value)}</span>${imgName('resource', 'img/resources', field)}</div>`
+        return `<span class="resource-text big-numner resource-${field}" title="${Number(value).toLocaleString()}">${bigNumber(value)}</span>`
+    }
+
+    function lvlImgForFormatter(value, row, index, field) {
+        if (!row[field]) {
+            return '<span class="resource-img" style="display: block;"></span>'
+        }
+
+        return imgName('resource-img', 'img/resources', field)
+    }
+    
+    /*function lvlFoodFormatter(value, row, index, field) {
+        //console.log('lvlFoodFormatter', value, row, index, field)
+        if (!value) {
+            return '<span class="food"></span>'
+        }
+
+        if ($leveling_level === 'undefined') {
+            return '<span class="food">' + value + '</span>'
+        } else {
+            return '<span class="food">' + value + '(' + row['food-total'] + ')</span>'
+        }
+        
+    }*/
+
+    function bigNumber(value) {
+
+        // 10 Zeroes for 10 Billions
+        return Math.abs(Number(value)) >= 1.0e+10
+        ? (Math.abs(Number(value)) / 1.0e+9).toFixed(0) + " B"
+
+        // Nine Zeroes for Billions
+        : Math.abs(Number(value)) >= 1.0e+9
+        ? Number((Math.abs(Number(value)) / 1.0e+9).toFixed(2)) + " B"
+
+        // 7 Zeroes for 10 Millions 
+        : Math.abs(Number(value)) >= 1.0e+7
+        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(0) + " M"
+
+        // Six Zeroes for Millions 
+        : Math.abs(Number(value)) >= 1.0e+6
+        ? Number((Math.abs(Number(value)) / 1.0e+6).toFixed(2)) + " M"
+
+        // 4 Zeroes for 10 Thousands
+        : Math.abs(Number(value)) >= 1.0e+4
+        ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + " K"
+
+        // Three Zeroes for Thousands
+        : Math.abs(Number(value)) >= 1.0e+3
+        ? Number((Math.abs(Number(value)) / 1.0e+3).toFixed(2)) + " K"
+
+        // Plain
+        :Math.abs(Number(value));
+    }
+
+    function lvlPatchTableHeader() {
+        var lvl_span_column = [9, 11, 13, 15]
+        $('#leveling th').each((index, elem) => {
+            if (lvl_span_column.includes(index)) {
+                $(elem).attr('colspan', 2)
+                $(elem).addClass('column-labeled')
+            }
+            if (lvl_span_column.includes(index - 1)) {
+                $(elem).css('display', 'none')
+                $(elem).addClass('column-label')
+            }
+        })
+    }
+
+    $(function() {
+        $table_leveling.bootstrapTable({
+            url: 'data/lvl.json', 
+            onLoadSuccess: function (data) {
+                if ($leveling_data === undefined) {
+                    lvlGenerateTotalData(data);
+                }
+            },
+            onClickCell: lvlClickCell,
+            onPostHeader: lvlPatchTableHeader,
+        })
+    })
+
+    // #################################################################
+    // cores
+    // #################################################################
+
+    function transcendenceLoad() {
+        $('#transcendenceCores').val(getCookie('cores-cores', 0))
+        $('#transcendenceSphere').val(getCookie('cores-sphere', 0))
+        transcendenceCalc();
+    }
+    
+    function transcendenceUnlucky() {
+        $('#transcendenceCores').get(0).value++
+        transcendenceCalc(); 
+    }
+    function transcendenceLucky() {
+        $('#transcendenceCores').get(0).value++ 
+        $('#transcendenceSphere').get(0).value++
+        transcendenceCalc();
+    }
+    function transcendenceCalc() {
+        let cores = parseInt($('#transcendenceCores').val())
+        let sphere = parseInt($('#transcendenceSphere').val())
+
+        setCookie('cores-cores', cores)
+        setCookie('cores-sphere', sphere)
+
+        let guidance = cores / 15.0
+
+        $('#transcendenceFate').html(sphere.toFixed(2))
+        $('#transcendenceGuidance').html(guidance.toFixed(2))
+    }
+
+    transcendenceLoad();
+</script>
+    </body>
+</html>
