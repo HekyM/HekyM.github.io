@@ -1001,6 +1001,193 @@ leveling = {
     },
 }
 
+imprints = {
+    "V1": {
+        "Attack or HP": [
+            600
+            ,1226
+            ,1878
+            ,2556
+            ,3260
+            ,3990
+            ,4772
+            ,5606
+            ,6492
+            ,7430
+            ,8420
+            ,9488
+            ,10634
+            ,11858
+            ,13160
+            ,14540
+            ,16024
+            ,17612
+            ,19304
+            ,21100
+            ,23000
+            ,25030
+            ,27190
+            ,29480
+            ,31900
+            ,34450
+            ,37156
+            ,40018
+            ,43036
+            ,46210
+        ],
+        "Attack HP": [
+            1878
+            ,3990
+            ,6492
+            ,9488
+            ,13160
+            ,17612
+            ,23000
+            ,29480
+            ,37156
+            ,46210
+        ],
+    },
+    "V2": {
+        "Attack or HP": [
+            3330
+            ,6842
+            ,10536
+            ,14412
+            ,18470
+            ,22710
+            ,27158
+            ,31814
+            ,36678
+            ,41750
+            ,47030
+            ,52544
+            ,58292
+            ,64274
+            ,70490
+            ,76940
+            ,83650
+            ,90620
+            ,97850
+            ,105340
+            ,113090
+            ,121126
+            ,129448
+            ,138056
+            ,146950
+            ,156130
+            ,165622
+            ,175426
+            ,185542
+            ,195970
+        ],
+        "Attack HP": [
+            10536
+            ,22710
+            ,36678
+            ,52544
+            ,70490
+            ,90620
+            ,113090
+            ,138056
+            ,165622
+            ,195970
+        ],
+    },
+    "V3": {
+        "Attack or HP": [
+            10740
+            ,21818
+            ,33234
+            ,44988
+            ,57080
+            ,69510
+            ,82304
+            ,95462
+            ,108984
+            ,122870
+            ,137120
+            ,151760
+            ,166790
+            ,182210
+            ,198020
+            ,214220
+            ,230836
+            ,247868
+            ,265316
+            ,283180
+            ,301460
+            ,320182
+            ,339346
+            ,358952
+            ,379000
+            ,399490
+            ,420448
+            ,441874
+            ,463768
+            ,486130
+        ],
+        "Attack HP": [
+            33234
+            ,69510
+            ,108984
+            ,151760
+            ,198020
+            ,247868
+            ,301460
+            ,358952
+            ,420448
+            ,486130
+        ],
+    },
+    "V4": {  
+        "Attack or HP": [
+            22830
+            ,46154
+            ,69972
+            ,94284
+            ,119090
+            ,144390
+            ,170210
+            ,196550
+            ,223410
+            ,250790
+            ,278690
+            ,307136
+            ,336128
+            ,365666
+            ,395750
+            ,426380
+            ,457582
+            ,489356
+            ,521702
+            ,554620
+            ,588110
+            ,622198
+            ,656884
+            ,692168
+            ,728050
+            ,764530
+            ,801634
+            ,839362
+            ,877714
+            ,916690
+        ],
+        "Speed": [
+            69972
+            ,144390
+            ,223410
+            ,307136
+            ,395750
+            ,489356
+            ,588110
+            ,692168
+            ,801634
+            ,916690
+        ],
+    },
+}
+
 # hero: 140x140 (25)
 # shard: 158x158 (25)
 
@@ -1099,6 +1286,58 @@ def generate_total_leveling():
     return rows
 
 
+def generate_imprints():
+    total = 0
+    rows = []
+    for lvl, data in imprints.items():
+        lvl_cost = 0
+        for node, stellars in data.items():
+            prev = 0
+            per_level = []
+            for item in stellars:
+                per_level.append(item - prev)
+                prev = item
+
+            cost = sum(per_level)
+
+            upgrades = [
+                {'lvl': i, 'cost': cost, 'total': total, 'max': sum(per_level[i:])} 
+                for i, cost, total in zip(range(1, len(per_level) + 1), per_level, stellars)]
+            upgrades.insert(0, {'lvl': 0, 'cost': 0, 'total': 0, 'max': cost})
+
+            for name in node.split(' or '):
+                lvl_cost += cost
+                rows.append({
+                    'id': f'{lvl}{name}'.replace(' ', '-').lower(),
+                    'group': lvl,
+                    'type': 'node',
+                    'name': name,
+                    'levels': len(per_level),
+                    'stellar': cost,
+                    'stellar-total': cost,
+                    'count': 0,
+                    'stellar-calc': cost,
+                    'upgrades': upgrades,
+                })
+        
+        total += lvl_cost
+
+        rows.append({
+            'id': f'{lvl}'.lower(),
+            'group': lvl,
+            'type': 'lvl',
+            'name': lvl,
+            'levels': 0,
+            'stellar': lvl_cost,
+            'stellar-total': total,
+            'count': 0,
+            'stellar-calc': total,
+            'upgrades': '10*',
+        })
+
+    return rows
+
+
 def generate():
     def generate_fusion_heroes(faction):
         faction_heroes = heroes[faction]
@@ -1123,6 +1362,7 @@ def generate():
     fusion_heroes_filename = 'data/fusion_heroes.v1.json'
     shelter_heroes_filename = 'data/shelter_heroes.v1.json'
     lvl_filename = 'data/lvl.v1.json'
+    imprints_filename = 'data/imprints.v1.json'
 
     fusion_heroes = []
     for faction in heroes.keys():
@@ -1144,6 +1384,9 @@ def generate():
     # with open('data/lvl-total.json', 'w') as outfile:
     #     json.dump(generate_total_leveling(), outfile)
 
+    with open(imprints_filename, 'w') as outfile:
+        json.dump(generate_imprints(), outfile)
+
     import re
     with open ('index.html', 'r' ) as f:
         content = f.read()
@@ -1151,6 +1394,7 @@ def generate():
     content = re.sub('data\/fusion_heroes\.v[0-9]+\.json', fusion_heroes_filename, content, flags = re.M)
     content = re.sub('data\/shelter_heroes\.v[0-9]+\.json', shelter_heroes_filename, content, flags = re.M)
     content = re.sub('data\/lvl\.v[0-9]+\.json', lvl_filename, content, flags = re.M)
+    content = re.sub('data\/imprints\.v[0-9]+\.json', imprints_filename, content, flags = re.M)
 
     with open ('index.html', 'w' ) as f:
         f.write(content)

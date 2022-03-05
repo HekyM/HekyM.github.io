@@ -82,6 +82,7 @@
 
             .table td, .table th {
                 padding: 5px !important;
+                border-bottom: 2px solid black;
             }
             .table .th-inner {
                 padding: 0px !important;
@@ -125,6 +126,7 @@
             img{display: block; margin-left: auto; margin-right: auto;}
             img.hero {width: 45px; height: 45px;}
             img.layout {width: 30px; height: 30px;}
+            img.small {width: 25px; height: 25px;}
             img.stars {height: 15px;}
             td img.stars {height: 25px;}
 
@@ -488,11 +490,12 @@
             .resource-text.big-numner {
                 min-width: 3.1em;
                 display: block;
+                text-align: right;
             }
             .resource-stone { color: #ded3e2; }
             .resource-spirit { color: #cedfd1; }
             .resource-gold { color: #d4cebe; }
-            .resource-stellar { color: #e1e2f5; }
+            .resource-stellar, .resource-stellar-total, .resource-stellar-calc { color: #e1e2f5; }
 
             .clickable:hover {
                 cursor: pointer;
@@ -539,6 +542,88 @@
             .events {
                 display: none;
             }
+
+            /* Imprints */
+
+            #imprints tr.lvl td {
+                background-color: #9b795c;
+            }
+            #imprints thead {
+                text-align: right;
+            }
+            #imprints thead img {
+                margin-right: 0;
+            }
+
+            .min-max-value > * {
+                float: left;
+            }
+            .imprints-count {
+                min-width: 13em;
+                padding-left: .5em;
+                padding-right: .5em;
+            }
+            .imprints-count img {
+                margin: 2px;
+            }
+            .imprints-count input, .imprints-count span {
+                width: 2em;
+                font-size: larger;
+            }
+            .imprints-count input {
+                width: 1.7em;
+                text-align: right;
+                background: none;
+                border: none;
+                padding: 0;
+            }
+            #imprints .fa {
+                color: white;
+            }
+            .imprints-detail {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .imprints-detail thead {
+                text-align: center;
+            }
+            
+            .imprints-detail tbody {
+                text-align: right;
+            }
+            .imprints-detail .resorce-text {
+                font-family: 'Fira Mono';
+                font-weight: bold;
+                padding-left: 2em !important;
+            }
+            #imprints .lvl .detail-icon{display:none;}
+
+            .imprints-calc-text {
+                width: 5em;
+                display: block;
+                text-align: right;
+                color: black;
+            }
+            .imprints-calc-dropdown {
+                width: 18.3em;
+                background-color: #e1caaa;
+                border: 2px solid #47270c;
+                border-radius: 20px;
+                margin-left: -10.3em;
+                margin-top: 1.3em;
+                padding: 1em;
+            }
+            .imprints-calc-dropdown button {
+                margin: .1em;
+                width: 3em;
+                text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            }
+            .imprints-calc-options-minmax {
+                margin-left: 2.8em;
+            }
+            .imprints-calc-options-minmax button {
+                width: 5em;
+            }
         </style>
     </head>
     <body onload="init();">
@@ -549,6 +634,7 @@
                 <a class="nav-link top active" id="tab00-tab" data-toggle="pill" href="#tab00" role="tab"><img class="layout" src="img/layout/i.png"><span>Home</span></a>
                 <a class="nav-link" id="tab01-tab" data-toggle="pill" href="#tab01" role="tab"><img class="layout" src="img/heroes/eloise-10.png"><span>Heroes</span></a>
                 <a class="nav-link" id="tab02-tab" data-toggle="pill" href="#tab02" role="tab"><img class="layout" src="img/resources/stone.png"><span>Leveling</span></a>
+                <a class="nav-link" id="tab09-tab" data-toggle="pill" href="#tab09" role="tab"><img class="layout" src="img/resources/stellar.png"><span>Imprints</span></a>
                 <a class="nav-link" id="tab03-tab" data-toggle="pill" href="#tab03" role="tab"><img class="layout" src="img/heroes/aleria-4.png"><span>Shelter Heroes</span></a>
                 <a class="nav-link" id="tab04-tab" data-toggle="pill" href="#tab04" role="tab"><img class="layout" src="img/layout/imp-dice.png"><span>Imp's Adventure</span></a>
                 <a class="nav-link" id="tab05-tab" data-toggle="pill" href="#tab05" role="tab"><img class="layout" src="img/layout/egg.png"><span>Eggs</span></a>
@@ -565,7 +651,7 @@
             <div class="col-9 container-col">
               <div class="tab-content" id="nav-tabs">
                 <!-- ################################################################# -->
-                <!-- evets -->
+                <!-- home -->
                 <!-- ################################################################# -->
                 <div class="tab-pane show active" id="tab00" role="tabpanel">
                     <div class="ih-container">
@@ -581,6 +667,12 @@
                         <li>Shows resource required to level up heroes</li>
                         <li>Click on hero (or star in header) to toggle to required resources on next levels in total</li>
                         <li>Click again on selected hero (star) to toggle back from total</li>
+                        </ul>
+                        <h1>Imprints</h1>
+                        <ul>
+                        <li>Shows cost of stellar shards to imprint hero</li>
+                        <li>Allow to calculate remaing cost based on insetred node levels</li>
+                        <li>* before node level indicate updated value, but cost need to be-recalculated by &#x1F504; in header</li>
                         </ul>
                         <h1>Shelter Heroes</h1>
                         <ul>
@@ -789,6 +881,26 @@
                                 <th data-field="stellar" data-formatter="lvlImgForFormatter"></th>
                                 <!-- <th data-field="food" data-formatter="lvlFoodFormatter"></th> -->
                                 <!-- <th data-field="food-total" data-visible="false"></th> -->
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- ################################################################# -->
+                <!-- Imprints -->
+                <!-- ################################################################# -->
+                <div class="tab-pane" id="tab09" role="tabpanel">
+                    <table id="imprints" class="imprints table-borderless w-auto" data-id-field="id">
+                        <thead>
+                            <tr>
+                                <!-- <th data-field="type">Type</th> -->
+                                <th data-field="name" data-formatter="imprintsNameIconFormatter"></th>
+                                <th data-field="name" data-formatter="imprintsNameFormatter">Node Type</th>
+                                <th data-field="stellar" data-formatter="imprintsCostFormatter">Node Cost</th>
+                                <th data-field="stellar" data-formatter="imprintsStellarFormatter"></th>
+                                <th data-field="count" data-formatter="imprintsCountFormatter"><img class="layout" src="img/layout/reset.png" title="Reset" onclick="imprintsCountReset();"></th>
+                                <th data-formatter="imprintsMaxCountFormatter"></th>
+                                <th data-field="stellar-calc" data-formatter="lvlBigNumberFormatter"><img class="layout resources" src="img/layout/update.png" title="re-calculate" onclick="imprintsCalc();"></th>
+                                <th data-field="stellar-calc" data-formatter="imprintsStellarFormatter"></th>
                             </tr>
                         </thead>
                     </table>
@@ -2056,13 +2168,13 @@
         </div>`
     }
 
-    function lvlBigNumberFormatter(value, row, index, field) {
+    function lvlBigNumberFormatter(value, row, index, field, preffix='') {
         if (!value) {
             return '<span class="resource-text big-numner"></span>'
         }
 
         //return `<div class="resource"><span>${bigNumber(value)}</span>${imgName('resource', 'img/resources', field)}</div>`
-        return `<span class="resource-text big-numner resource-${field}" title="${Number(value).toLocaleString()}">${bigNumber(value)}</span>`
+        return `<span class="resource-text big-numner resource-${field}" title="${Number(value).toLocaleString()}">${preffix}${bigNumber(value)}</span>`
     }
 
     function lvlImgForFormatter(value, row, index, field) {
@@ -2091,27 +2203,27 @@
 
         // 10 Zeroes for 10 Billions
         return Math.abs(Number(value)) >= 1.0e+10
-        ? (Math.abs(Number(value)) / 1.0e+9).toFixed(0) + " B"
+        ? (Math.abs(Number(value)) / 1.0e+9).toFixed(0) + "&nbsp;B"
 
         // Nine Zeroes for Billions
         : Math.abs(Number(value)) >= 1.0e+9
-        ? Number((Math.abs(Number(value)) / 1.0e+9).toFixed(2)) + " B"
+        ? Number((Math.abs(Number(value)) / 1.0e+9).toFixed(2)) + "&nbsp;B"
 
         // 7 Zeroes for 10 Millions 
         : Math.abs(Number(value)) >= 1.0e+7
-        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(0) + " M"
+        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(0) + "&nbsp;M"
 
         // Six Zeroes for Millions 
         : Math.abs(Number(value)) >= 1.0e+6
-        ? Number((Math.abs(Number(value)) / 1.0e+6).toFixed(2)) + " M"
+        ? Number((Math.abs(Number(value)) / 1.0e+6).toFixed(2)) + "&nbsp;M"
 
         // 4 Zeroes for 10 Thousands
         : Math.abs(Number(value)) >= 1.0e+4
-        ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + " K"
+        ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + "&nbsp;K"
 
         // Three Zeroes for Thousands
         : Math.abs(Number(value)) >= 1.0e+3
-        ? Number((Math.abs(Number(value)) / 1.0e+3).toFixed(2)) + " K"
+        ? Number((Math.abs(Number(value)) / 1.0e+3).toFixed(2)) + "&nbsp;K"
 
         // Plain
         :Math.abs(Number(value));
@@ -2142,6 +2254,191 @@
             onClickCell: lvlClickCell,
             onPostHeader: lvlPatchTableHeader,
         })
+    })
+
+    // #################################################################
+    // Imprints
+    // #################################################################
+
+    var $table_imprints = $('#imprints')
+
+    function imprintsNameIconFormatter(value, row, index, field) {
+        if (row.type === 'node') {
+            return imgName('small', 'img/layout', 'Imprints ' + value)
+        } else {
+            return imgName('hero', 'img/layout', 'Stars ' + value)
+        }
+    }
+
+    function imprintsNameFormatter(value, row, index, field) {
+        if (row.type === 'node') {
+            return value
+        } else {
+            return imgName('hero', 'img/heroes/shards', 'Any Puppet 10*')
+        }
+    }
+
+    function imprintsCostFormatter(value, row, index, field) {
+        if (row.type === 'node') {
+            return lvlBigNumberFormatter(value, row, index, field)
+        } else {
+            return `<span class="resource-text big-numner resource-${field}" title="lvl: ${Number(value).toLocaleString()} / total: ${Number(row['stellar-total']).toLocaleString()}">= ${bigNumber(value)} / ${bigNumber(row['stellar-total'])}</span>`
+        }
+    }
+
+    function imprintsCountFormatterX(value, row, index, field) {
+        if (row.type === 'node') {//updateValue(selector, value, min, max)
+            return `
+            <div class="min-max-value imprints-count">
+                <img class="small clickable" src="img/layout/val-min.png" onclick="setValue('#imprints-calc-${row.id}', 0);">
+                <img class="small clickable" src="img/layout/val-dec.png" onclick="updateValue('#imprints-calc-${row.id}', -1, 0, ${row.levels});">
+                <input type="number" class="imprints-calc" value="0" id="imprints-calc-${row.id}">
+                <span>/${row.levels}</span>
+                <img class="small clickable" src="img/layout/val-inc.png" onclick="updateValue('#imprints-calc-${row.id}', +1, 0, ${row.levels});">
+                <img class="small clickable" src="img/layout/val-max.png" onclick="setValue('#imprints-calc-${row.id}', ${row.levels});">
+            </div>
+            `
+        } else {
+            return ""
+        }
+    }
+
+    function imprintsCountFormatter(value, row, index, field) {
+        if (row.type === 'node') {//updateValue(selector, value, min, max)
+            let _value = `
+            <div class="dropright">
+                <input type="number" class="imprints-calc" value="${value}" id="imprints-calc-${row.id}" style="display: none">
+                <a href="#" data-toggle="dropdown">
+                    <span class="imprints-calc-text max-${row.levels}" id="imprints-calc-text-${row.id}">${value}/${row.levels}<span>
+                </a>
+                <div class="dropdown-menu imprints-calc-dropdown">
+                    <div class="imprints-calc-options-minmax">
+                        <button type="button" class="btn btn-primary" onclick="imprintsCountSet('${row.id}', 0, ${row.levels});">min</button>
+                        <button type="button" class="btn btn-primary" onclick="imprintsCountSet('${row.id}', ${row.levels}, ${row.levels});">max</button>
+                    </div>
+                    <div class="imprints-calc-options">
+            `
+
+            for (i = 1; i <= row.levels; i++) {
+                _value += `<button type="button" class="btn btn-primary" onclick="imprintsCountSet('${row.id}', ${i}, ${row.levels});">${i}</button>`
+            }
+
+            _value += `
+                    </div>
+                </div>
+            </div>
+            `
+
+            return _value
+        } else {
+            return ""
+        }
+    }
+
+    function imprintsMaxCountFormatter(value, row, index, field) {
+        if (row.type === 'node') {
+            return `<img class="small clickable" src="img/layout/val-max.png" onclick="imprintsCountSet('${row.id}', ${row.levels}, ${row.levels});">`
+        } else {
+            return ''
+        }
+    }
+
+    function imprintsStellarFormatter(value, row, index, field) {
+        if (!value) {
+            return '<span class="resource-img" style="display: block;"></span>'
+        }
+
+        return imgName('resource-img', 'img/resources', 'stellar')
+    }
+
+    function imprintsDetailFormatter(index, row) {
+        if (row.type !== 'node') {
+            return ""
+        }
+        var html = []
+        html.push('<table class="imprints-detail">')
+        html.push('<thead><tr><th>lvl</th><th colspan="2">cost</th><th colspan="2">total</th><th colspan="2">to-max</th></tr></thead>')
+        html.push('<tbody>')
+        $.each(row.upgrades, function (index, detail) {
+            html.push('<tr><td>' 
+                + detail.lvl
+                + '</td><td class="resorce-text">' 
+                + detail.cost.toLocaleString()
+                + '<td><img class="resource-img" src="img/resources/stellar.png"</td>'
+                + '</td><td class="resorce-text">' 
+                + detail.total.toLocaleString()
+                + '<td><img class="resource-img" src="img/resources/stellar.png"</td>' 
+                + '</td><td class="resorce-text">' 
+                + detail.max.toLocaleString() 
+                + '<td><img class="resource-img" src="img/resources/stellar.png"</td>'
+                + '</td></tr>'
+            )
+        })
+        html.push('</tbody>')
+        html.push('</table>')
+        return html.join('')
+    }
+
+    function imprintsRowStyle(row, index) {
+        return {
+            classes: row.type
+        }
+    }
+
+    function  imprintsCountSet(selectorId, value, max) {
+        $(`#imprints-calc-${selectorId}`).val(value).trigger('input')
+        $(`#imprints-calc-text-${selectorId}`).html('*' + value + '/' + max)
+    }
+
+    function imprintsCountReset() {
+        $('.imprints-calc').val(0)
+        $('.imprints-calc-text.max-10').html("0/10")
+        $('.imprints-calc-text.max-30').html("0/30")
+        imprintsCalc();
+    }
+
+    function imprintsCalc() {
+        console.log('imprintsCalc')
+
+        var calc = {}
+        var data = $table_imprints.bootstrapTable('getData')
+        let lvl_calc = 0
+        let total = 0
+        let count = 0
+        data.forEach((row, index) => {
+            if (row.type === 'node') {   
+                cout = $(`#imprints-calc-${row.id}`).val()
+                calc[index] = { 'count': cout, 'calc': row.upgrades[cout].max}
+                lvl_calc += calc[index]['calc']
+                total += calc[index]['calc']
+            } else {
+                calc[index] = { 'count': 0, 'calc': total}
+                lvl_calc = 0
+            }
+        })
+
+        data.forEach((row, index) => {
+            $table_imprints.bootstrapTable('updateCell', {
+                index: index,
+                field: 'count',
+                value: calc[index]['count']
+            })
+            $table_imprints.bootstrapTable('updateCell', {
+                index: index,
+                field: 'stellar-calc',
+                value: calc[index]['calc']
+            })
+        })
+    }
+
+    $(function() {
+        $table_imprints.bootstrapTable({
+            url: 'data/imprints.v1.json', 
+            rowStyle: imprintsRowStyle,
+            detailView: true,
+            detailViewAlign: 'right',
+            detailFormatter: imprintsDetailFormatter,
+            })
     })
 
     // #################################################################
