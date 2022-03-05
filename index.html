@@ -21,6 +21,7 @@
 
         <script type="module" src="https://vincitego.github.io/imp/impSim.js"></script>
 
+        <meta name="viewport" content="width=device-width" />
         <style>
             /*@import url(https://db.onlinewebfonts.com/c/e7f249e71a563eed9c495835657eb9c2?family=Poetsen+One);*/
             @font-face {font-family: "Poetsen One"; src: url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.eot"); src: url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.eot?#iefix") format("embedded-opentype"), url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.woff2") format("woff2"), url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.woff") format("woff"), url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.ttf") format("truetype"), url("https://db.onlinewebfonts.com/t/e7f249e71a563eed9c495835657eb9c2.svg#Poetsen One") format("svg"); }
@@ -31,11 +32,49 @@
             body {
                 font-family: "Poetsen One";
                 background-color: #b8ae93;
-                padding: 2em;
+                padding: 15px;
             }
 
+            #main {
+                max-width: 980px;
+                padding: 0;
+                margin: 0;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .container-row {
+                margin: 0;
+            }
             .container-col {
                 padding: 0;
+            }
+            .container-menu {
+                flex: 0 0 14em;
+                max-width: 14em;
+            }
+            .container-body {
+                flex: 0 0 calc(100% - 14em);
+                max-width: calc(100% - 14em);
+            }
+
+            @media (max-width: 1000px) {
+                #main {
+                    max-width: calc(980px - 14em + 48px);
+                }
+                .nav-link {
+                    width: 46px;
+                }
+                .nav-link span {
+                    display: none;
+                }
+                .container-menu {
+                    flex: 0 0 48px;
+                    max-width: 48px;
+                }
+                .container-body {
+                    flex: 0 0 calc(100% - 48px);
+                    max-width: calc(100% - 48px);
+                }
             }
 
             #nav-tab {
@@ -627,9 +666,9 @@
         </style>
     </head>
     <body onload="init();">
-        <div class="container">
-        <div class="row">
-            <div class="col-3 container-col">
+        <div id="main">
+        <div class="row container-row">
+            <div class="col-3 container-col container-menu">
               <div class="nav flex-column nav-pills" id="nav-tab" role="tablist">
                 <a class="nav-link top active" id="tab00-tab" data-toggle="pill" href="#tab00" role="tab"><img class="layout" src="img/layout/i.png"><span>Home</span></a>
                 <a class="nav-link" id="tab01-tab" data-toggle="pill" href="#tab01" role="tab"><img class="layout" src="img/heroes/eloise-10.png"><span>Heroes</span></a>
@@ -648,7 +687,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-9 container-col">
+            <div class="col-9 container-col container-body">
               <div class="tab-content" id="nav-tabs">
                 <!-- ################################################################# -->
                 <!-- home -->
@@ -877,10 +916,8 @@
                                 <th data-field="spirit" data-formatter="lvlImgForFormatter"></th>
                                 <th data-field="gold" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/gold.png" title="Gold"></th>
                                 <th data-field="gold" data-formatter="lvlImgForFormatter"></th>
-                                <th data-field="stellar" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/stellar.png" title="Stellar Shard"></th>
-                                <th data-field="stellar" data-formatter="lvlImgForFormatter"></th>
-                                <!-- <th data-field="food" data-formatter="lvlFoodFormatter"></th> -->
-                                <!-- <th data-field="food-total" data-visible="false"></th> -->
+                                <!-- <th data-field="stellar" data-formatter="lvlBigNumberFormatter"><img class="hero" src="img/resources/stellar.png" title="Stellar Shard"></th> -->
+                                <!-- <th data-field="stellar" data-formatter="lvlImgForFormatter"></th> -->
                             </tr>
                         </thead>
                     </table>
