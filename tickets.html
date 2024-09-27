@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+    <meta name="generator" content="PSPad editor, www.pspad.com">
+    <title></title>
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+
+        td {
+            text-align: center; 
+            vertical-align: middle;
+        }
+        td.lt {text-align: left;}
+        td.rt {text-align: right;}
+
+
+        .in {
+            width: 2em;
+            height: 2em;
+            text-align:center;
+            font-weight: 800;
+            font-size: 1.5em;
+            border-radius: 10em;
+            padding: .2em;
+            background-color: lightblue;
+        }
+
+    </style>
+
+    </head>
+    <body>
+
+    <table>
+      <tr></tr>
+        <td></td>
+        <td colspan="3"><button type="button" onclick="reset()">RESET</button><button type="button" onclick="calc()">CALC</button></td>
+        <td colspan="3"><span id="info"></span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input class="in" type="number" id="r0c0" value="9"/></td><td><input class="in" type="number" id="r0c1"/></td><td><input class="in" type="number" id="r0c2"/></td>
+        <td colspan="3"><hr></td>
+        <td>&#9491;</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input class="in" type="number" id="r1c0"/></td><td><input class="in" type="number" id="r1c1"/></td><td><input class="in" type="number" id="r1c2"/></td>
+        <td colspan="2"><hr></td>
+        <td>&#9491;</td>
+        <td>&#9475;</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input class="in" type="number" id="r2c0"/></td><td><input class="in" type="number" id="r2c1"/></td><td><input class="in" type="number" id="r2c2"/></td>
+        <td><hr></td>
+        <td>&#9491;</td>
+        <td>&#9475;</td>
+        <td>&#9475;</td>
+      </tr>
+      <tr></tr>
+        <td class="rt">&#9585;</td>
+        <td>&#9475;</td>
+        <td>&#9475;</td>
+        <td>&#9475;</td>
+        <td class="lt">&#9586;</td>
+        <td>&#9475;</td>
+        <td>&#9475;</td>
+        <td>&#9475;</td>
+      </tr>
+
+      <tr>
+        <td><span id="avg_trbl"></span></td>
+        <td><span id="avg_c0"></span></td>
+        <td><span id="avg_c1"></span></td>
+        <td><span id="avg_c2"></span></td>
+        <td><span id="avg_tlbr"></span></td>
+        <td><span id="avg_r2"></span></td>
+        <td><span id="avg_r1"></span></td>
+        <td><span id="avg_r0"></span></td>
+      </tr>
+      
+      <tr>
+        <td><textarea id="i_trbl" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_c0" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_c1" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_c2" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_tlbr" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_r2" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_r1" rows="21" cols="8"></textarea></td>
+        <td><textarea id="i_r0" rows="21" cols="8"></textarea></td>
+      </tr>
+    </table>
+
+    <script>
+      function remove(data, value) {
+        var i = data.indexOf(value);
+        if (i === -1) {
+          throw value + " not found in " + data.toString();
+        }
+        return data.filter(e => e !== value);
+      }
+
+      const value_map = {
+          6: 1680, 7: 84, 8: 630, 9: 280,
+          10: 42, 11: 34, 12: 180, 13: 120,
+          14: 53, 15: 105, 16: 53, 17: 144,
+          18: 48, 19: 202, 20: 105, 21: 51,
+          22: 420, 23: 840, 24: 1008
+      };
+      const info = document.getElementById("info");
+
+      const  v_r0c0 = document.getElementById("r0c0");
+      const  v_r0c1 = document.getElementById("r0c1");
+      const  v_r0c2 = document.getElementById("r0c2");
+
+      const  v_r1c0 = document.getElementById("r1c0");
+      const  v_r1c1 = document.getElementById("r1c1");
+      const  v_r1c2 = document.getElementById("r1c2");
+
+      const  v_r2c0 = document.getElementById("r2c0");
+      const  v_r2c1 = document.getElementById("r2c1");
+      const  v_r2c2 = document.getElementById("r2c2");
+  
+
+      const  i_tlbr = document.getElementById("i_tlbr");
+      const  i_c0 = document.getElementById("i_c0");
+      const  i_c1 = document.getElementById("i_c1");
+      const  i_c2 = document.getElementById("i_c2");
+      const  i_trbl = document.getElementById("i_trbl");
+      const  i_r2 = document.getElementById("i_r2");
+      const  i_r1 = document.getElementById("i_r1");
+      const  i_r0 = document.getElementById("i_r0");
+
+      const  avg_tlbr = document.getElementById("avg_tlbr");
+      const  avg_c0 = document.getElementById("avg_c0");
+      const  avg_c1 = document.getElementById("avg_c1");
+      const  avg_c2 = document.getElementById("avg_c2");
+      const  avg_trbl = document.getElementById("avg_trbl");
+      const  avg_r2 = document.getElementById("avg_r2");
+      const  avg_r1 = document.getElementById("avg_r1");
+      const  avg_r0 = document.getElementById("avg_r0");
+
+      const opts_all = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      function reset() {
+        v_r0c0.value="";
+        v_r0c1.value="";
+        v_r0c2.value="";
+        v_r1c0.value="";
+        v_r1c1.value="";
+        v_r1c2.value="";
+        v_r2c0.value="";
+        v_r2c1.value="";
+        v_r2c2.value="";
+  
+        reset_calc();
+      }
+
+      function reset_calc() {
+        i_tlbr.value="";
+        i_c0.value="";
+        i_c1.value="";
+        i_c2.value="";
+        i_trbl.value="";
+        i_r2.value="";
+        i_r1.value="";
+        i_r0.value="";
+
+        avg_tlbr.innerHTML="";
+        avg_c0.innerHTML="";
+        avg_c1.innerHTML="";
+        avg_c2.innerHTML="";
+        avg_trbl.innerHTML="";
+        avg_r2.innerHTML="";
+        avg_r1.innerHTML="";
+        avg_r0.innerHTML="";
+      }
+
+      function calc() {
+        info.innerHTML="calculating ..."
+
+        var opts = [...opts_all];
+
+        try {
+          if (v_r0c0.value) opts = remove(opts, Number(v_r0c0.value));
+          if (v_r0c1.value) opts = remove(opts, Number(v_r0c1.value));
+          if (v_r0c2.value) opts = remove(opts, Number(v_r0c2.value));
+          if (v_r1c0.value) opts = remove(opts, Number(v_r1c0.value));
+          if (v_r1c1.value) opts = remove(opts, Number(v_r1c1.value));
+          if (v_r1c2.value) opts = remove(opts, Number(v_r1c2.value));
+          if (v_r2c0.value) opts = remove(opts, Number(v_r2c0.value));
+          if (v_r2c1.value) opts = remove(opts, Number(v_r2c1.value));
+          if (v_r2c2.value) opts = remove(opts, Number(v_r2c2.value));
+        }
+        catch(err) {
+          console.log(err);
+          reset_calc();
+          info.innerHTML="ERROR"
+          return
+        }
+
+        //console.log('opts', opts);
+  
+        var opt_r0c0 = v_r0c0.value ? [Number(v_r0c0.value)] : opts;
+        var opt_r0c1 = v_r0c1.value ? [Number(v_r0c1.value)] : opts;
+        var opt_r0c2 = v_r0c2.value ? [Number(v_r0c2.value)] : opts;
+        var opt_r1c0 = v_r1c0.value ? [Number(v_r1c0.value)] : opts;
+        var opt_r1c1 = v_r1c1.value ? [Number(v_r1c1.value)] : opts;
+        var opt_r1c2 = v_r1c2.value ? [Number(v_r1c2.value)] : opts;
+        var opt_r2c0 = v_r2c0.value ? [Number(v_r2c0.value)] : opts;
+        var opt_r2c1 = v_r2c1.value ? [Number(v_r2c1.value)] : opts;
+        var opt_r2c2 = v_r2c2.value ? [Number(v_r2c2.value)] : opts;
+
+        calc_opts(opt_r0c0, opt_r0c1, opt_r0c2, i_r0, avg_r0);
+        calc_opts(opt_r1c0, opt_r1c1, opt_r1c2, i_r1, avg_r1);
+        calc_opts(opt_r2c0, opt_r2c1, opt_r2c2, i_r2, avg_r2);
+
+        calc_opts(opt_r0c0, opt_r1c0, opt_r2c0, i_c0, avg_c0);
+        calc_opts(opt_r0c1, opt_r1c1, opt_r2c1, i_c1, avg_c1);
+        calc_opts(opt_r0c2, opt_r1c2, opt_r2c2, i_c2, avg_c2);
+
+        calc_opts(opt_r0c0, opt_r1c1, opt_r2c2, i_tlbr, avg_tlbr);
+        calc_opts(opt_r0c2, opt_r1c1, opt_r2c0, i_trbl, avg_trbl);
+
+        let t = new Date();
+        info.innerHTML="updated "+t.toLocaleString()+"."+t.getMilliseconds();;
+      }
+
+      function calc_opts(opt_0, opt_1, opt_2, i_elem, avg_elem) {
+        let results = {};
+        let total=0;
+        let count=0;
+
+        let v_0 = 0;
+        let v_1 = 0;
+        let v_2 = 0;
+        let v_sum = 0;
+        let v_avg = 0;
+
+        //console.log('calc', opt_0, opt_1, opt_2);
+        //console.log('avg', total, count)
+
+        for (let i_0 = 0; i_0 < opt_0.length; i_0++) {
+          for (let i_1 = 0; i_1 < opt_1.length; i_1++) {
+            for (let i_2 = 0; i_2 < opt_2.length; i_2++) {
+
+              v_0 = opt_0[i_0];
+              v_1 = opt_1[i_1];
+              v_2 = opt_2[i_2];
+
+              if (v_0 === v_1 || v_0 === v_2 || v_1 == v_2) {
+                continue
+              }
+
+              v_sum = v_0 + v_1 + v_2;
+
+              //console.log('sum', v_sum, [opt_0[i_0], opt_1[i_1], opt_2[i_2]]);
+
+              results[v_sum] = value_map[v_sum];
+              total += value_map[v_sum];
+              count += 1;
+
+            }
+          }
+        }
+        v_avg = total /count 
+        avg_elem.innerHTML = "~" + v_avg.toFixed(0);
+
+        const reverse = {};
+        Object.keys(results).forEach(key => {
+          reverse[results[key]] = key;
+        });   
+
+        let = i_text = "";
+        Object.keys(reverse).reverse().forEach(function(key) {
+          i_text += reverse[key].toString().padStart(2, ' ') + ": " + key.toString() + "\n";
+        });
+        i_elem.value = i_text;
+
+      }
+
+    </script>
+
+
+    </body>
+</html>
