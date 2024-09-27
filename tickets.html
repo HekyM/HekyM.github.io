@@ -265,7 +265,7 @@
 
               v_sum = v_0 + v_1 + v_2;
 
-              //console.log('sum', v_sum, [opt_0[i_0], opt_1[i_1], opt_2[i_2]]);
+              //console.log('sum', v_sum, value_map[v_sum], [opt_0[i_0], opt_1[i_1], opt_2[i_2]]);
 
               results[v_sum] = value_map[v_sum];
               total += value_map[v_sum];
@@ -277,14 +277,15 @@
         v_avg = total /count 
         avg_elem.innerHTML = "~" + v_avg.toFixed(0);
 
-        const reverse = {};
-        Object.keys(results).forEach(key => {
-          reverse[results[key]] = key;
-        });   
+        const sorted = Object.entries(results).sort(function(a, b) {
+          return b[1] - a[1];
+        });;
+
+        //console.log(sorted)
 
         let = i_text = "";
-        Object.keys(reverse).reverse().forEach(function(key) {
-          i_text += reverse[key].toString().padStart(2, ' ') + ": " + key.toString() + "\n";
+        sorted.forEach(function(item) {
+          i_text += item[0].toString().padStart(2, ' ') + ": " + item[1].toString() + "\n";
         });
         i_elem.value = i_text;
 
