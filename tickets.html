@@ -17,6 +17,23 @@
           -moz-appearance: textfield;
         }
 
+        :root {
+          color-scheme: light dark;
+        }
+        button {
+          margin: 5px;
+        }
+        @media (prefers-color-scheme: dark) {
+          .in {
+            background-color: SteelBlue;         ;
+          }
+        }
+        @media (prefers-color-scheme: light) {
+          .in {
+            background-color: LightBlue;
+          }
+        }
+
         td {
             text-align: center; 
             vertical-align: middle;
@@ -33,7 +50,6 @@
             font-size: 1.5em;
             border-radius: 10em;
             padding: .2em;
-            background-color: lightblue;
         }
 
     </style>
@@ -189,6 +205,7 @@
 
       function calc() {
         info.innerHTML="calculating ..."
+        reset_calc();
 
         var opts = [...opts_all];
 
@@ -205,7 +222,6 @@
         }
         catch(err) {
           console.log(err);
-          reset_calc();
           info.innerHTML="ERROR"
           return
         }
@@ -234,7 +250,7 @@
         calc_opts(opt_r0c2, opt_r1c1, opt_r2c0, i_trbl, avg_trbl);
 
         let t = new Date();
-        info.innerHTML="updated "+t.toLocaleString()+"."+t.getMilliseconds();;
+        info.innerHTML="calc "+t.toLocaleString()+"."+t.getMilliseconds();
       }
 
       function calc_opts(opt_0, opt_1, opt_2, i_elem, avg_elem) {
