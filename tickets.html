@@ -65,20 +65,20 @@
       </tr>
       <tr>
         <td></td>
-        <td><input class="in" type="number" id="r0c0"/></td><td><input class="in" type="number" id="r0c1"/></td><td><input class="in" type="number" id="r0c2"/></td>
+        <td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r0c0"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r0c1"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r0c2"/></td>
         <td colspan="3"><hr></td>
         <td>&#9491;</td>
       </tr>
       <tr>
         <td></td>
-        <td><input class="in" type="number" id="r1c0"/></td><td><input class="in" type="number" id="r1c1"/></td><td><input class="in" type="number" id="r1c2"/></td>
+        <td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r1c0"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r1c1"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r1c2"/></td>
         <td colspan="2"><hr></td>
         <td>&#9491;</td>
         <td>&#9475;</td>
       </tr>
       <tr>
         <td></td>
-        <td><input class="in" type="number" id="r2c0"/></td><td><input class="in" type="number" id="r2c1"/></td><td><input class="in" type="number" id="r2c2"/></td>
+        <td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r2c0"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r2c1"/></td><td><input class="in"  onclick="this.select();" oninput="calc()" type="number" id="r2c2"/></td>
         <td><hr></td>
         <td>&#9491;</td>
         <td>&#9475;</td>
@@ -249,8 +249,18 @@
         calc_opts(opt_r0c0, opt_r1c1, opt_r2c2, i_tlbr, avg_tlbr);
         calc_opts(opt_r0c2, opt_r1c1, opt_r2c0, i_trbl, avg_trbl);
 
-        let t = new Date();
-        info.innerHTML="calc "+t.toLocaleString()+"."+t.getMilliseconds();
+        let grid = [
+          v_r0c0.value || '-',
+          v_r0c1.value || '-',
+          v_r0c2.value || '-',
+          v_r1c0.value || '-',
+          v_r1c1.value || '-',
+          v_r1c2.value || '-',
+          v_r2c0.value || '-',
+          v_r2c1.value || '-',
+          v_r2c2.value || '-',
+        ];
+        info.innerHTML="calc for ["+ grid.toString()+"]";
       }
 
       function calc_opts(opt_0, opt_1, opt_2, i_elem, avg_elem) {
